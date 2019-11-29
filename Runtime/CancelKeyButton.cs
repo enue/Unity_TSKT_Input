@@ -12,7 +12,9 @@ namespace TSKT
         Button button;
         Button Button => button ?? (button = GetComponent<Button>());
 
-        public override bool BlockingSignals => false;
+        [SerializeField]
+        bool blockingSignals = false;
+        public override bool BlockingSignals => blockingSignals;
 
         public override bool OnKeyDown(string key)
         {
