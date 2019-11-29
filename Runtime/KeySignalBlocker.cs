@@ -7,7 +7,7 @@ using System;
 
 namespace TSKT
 {
-    public class KeysBlocker : KeyBind
+    public class KeySignalBlocker : KeyBind
     {
         public override bool BlockingSignals => true;
 
