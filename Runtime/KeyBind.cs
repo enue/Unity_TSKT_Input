@@ -140,7 +140,30 @@ namespace TSKT
 
         static KeyBindBuffer keyBindsBuffer;
 
-        public static void SendSelected()
+        public static void SendSignals(
+            List<string> downKeys,
+            List<string> upKeys,
+            Dictionary<string, float> axisPositions)
+        {
+            SendSelected();
+            foreach (var it in downKeys)
+            {
+                if (SendOnKeyDown(it))
+                {
+                    return;
+                }
+            }
+            foreach (var it in upKeys)
+            {
+                if (SendOnKeyUp(it))
+                {
+                    return;
+                }
+            }
+            SendOnAxis(axisPositions);
+        }
+
+        static void SendSelected()
         {
             if (Modified)
             {
@@ -158,7 +181,7 @@ namespace TSKT
             }
         }
 
-        public static bool SendOnKeyDown(string key)
+        static bool SendOnKeyDown(string key)
         {
             foreach (var keyBind in keyBindsBuffer.Items)
             {
@@ -175,7 +198,7 @@ namespace TSKT
             return false;
         }
 
-        public static bool SendOnKeyUp(string key)
+        static bool SendOnKeyUp(string key)
         {
             foreach (var keyBind in keyBindsBuffer.Items)
             {
@@ -192,7 +215,7 @@ namespace TSKT
             return false;
         }
 
-        public static bool SendOnAxis(Dictionary<string, float> axisPositions)
+        static bool SendOnAxis(Dictionary<string, float> axisPositions)
         {
             foreach (var keyBind in keyBindsBuffer.Items)
             {
