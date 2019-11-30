@@ -13,7 +13,7 @@ namespace TSKT
         readonly Dictionary<string, float> axisPositions = new Dictionary<string, float>();
 
         public static KeyObserver Instance { get; private set; }
-        public IInput AppInput { get; set; }
+        public IInput AppInput { get; set; } = new DefaultInput();
         MergedKeyAssign keyAssign;
 
         void Awake()
