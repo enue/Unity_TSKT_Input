@@ -8,18 +8,31 @@ namespace TSKT
 {
     public class KeyObserver : MonoBehaviour
     {
+        public static KeyObserver Instance { get; private set; }
+
         readonly List<string> upKeys = new List<string>();
         readonly List<string> downKeys = new List<string>();
         readonly Dictionary<string, float> axisPositions = new Dictionary<string, float>();
 
-        public static KeyObserver Instance { get; private set; }
         public IInput AppInput { get; set; } = new DefaultInput();
         MergedKeyAssign keyAssign;
+
+        [SerializeField]
+        KeyAssign defaultKeyAssign = default;
 
         void Awake()
         {
             Instance = this;
         }
+
+        void Start()
+        {
+            if (keyAssign.keys == null && defaultKeyAssign)
+            {
+                SetKeyAssign(defaultKeyAssign);
+            }
+        }
+
         void OnDestroy()
         {
             if (Instance == this)
