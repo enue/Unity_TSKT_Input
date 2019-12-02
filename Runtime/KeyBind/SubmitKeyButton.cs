@@ -9,7 +9,9 @@ namespace TSKT
     [RequireComponent(typeof(Button))]
     public class SubmitKeyButton : KeyBind
     {
-        public override bool BlockingSignals => true;
+        [SerializeField]
+        bool blockingSignals = true;
+        public override bool BlockingSignals => blockingSignals;
 
         Button button;
         Button Button => button ?? (button = GetComponent<Button>());
