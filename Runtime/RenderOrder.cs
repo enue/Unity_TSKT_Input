@@ -8,11 +8,13 @@ namespace TSKT
     {
         readonly Canvas canvas;
         readonly double hierarchyPosition;
+        readonly int orderInObject;
 
-        public RenderOrder(Canvas rootCanvas, Transform target)
+        public RenderOrder(Canvas rootCanvas, Transform target, int orderInObject)
         {
             canvas = rootCanvas;
             TryGetHierarchyPosition(rootCanvas.transform, target, out hierarchyPosition);
+            this.orderInObject = orderInObject;
         }
 
         public static bool operator >(in RenderOrder x, in RenderOrder y)
@@ -44,6 +46,16 @@ namespace TSKT
             {
                 return -1;
             }
+
+            if (x.orderInObject > y.orderInObject)
+            {
+                return 1;
+            }
+            if (x.orderInObject < y.orderInObject)
+            {
+                return -1;
+            }
+
             return 0;
         }
 

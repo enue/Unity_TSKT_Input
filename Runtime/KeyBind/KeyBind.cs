@@ -50,7 +50,7 @@ namespace TSKT
                     }
 
                     keyBind.RefreshRootCanvas();
-                    var position = new RenderOrder(keyBind.RootCanvas, keyBind.transform);
+                    var position = new RenderOrder(keyBind.RootCanvas, keyBind.transform, keyBind.orderInObject);
 
                     if (maxInterceptor.HasValue)
                     {
@@ -72,7 +72,7 @@ namespace TSKT
                 keyBindPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
                 if (items == null)
                 {
-                    items = new List<KeyBind>(KeyBind.Instances.Count);
+                    items = new List<KeyBind>(Instances.Count);
                 }
                 else
                 {
@@ -94,6 +94,9 @@ namespace TSKT
 
         static HashSet<KeyBind> Instances { get; } = new HashSet<KeyBind>();
         static bool Modified { get; set; }
+
+        [SerializeField]
+        int orderInObject = 0;
 
         void OnEnable()
         {
