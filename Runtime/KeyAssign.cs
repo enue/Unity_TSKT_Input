@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace TSKT
 {
+    [CreateAssetMenu(fileName = "KeyAssign", menuName = "TSKT/Key assign", order = 1023)]
     public class KeyAssign : ScriptableObject
     {
         [System.Serializable]
