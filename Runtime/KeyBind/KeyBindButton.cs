@@ -15,7 +15,7 @@ namespace TSKT
         public override bool BlockingSignals => false;
 
         Button button;
-        Button Button => button ?? (button = GetComponent<Button>());
+        Button Button => button ? button : (button = GetComponent<Button>());
 
         public override bool OnKeyDown(string key)
         {

@@ -10,7 +10,7 @@ namespace TSKT
     public class CancelKeyButton : KeyBind
     {
         Button button;
-        Button Button => button ?? (button = GetComponent<Button>());
+        Button Button => button ? button : (button = GetComponent<Button>());
 
         [SerializeField]
         bool blockingSignals = false;

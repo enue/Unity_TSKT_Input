@@ -11,7 +11,7 @@ namespace TSKT
         {
             get
             {
-                return instance ?? (instance = Resources.Load<InputSetting>("InputSetting"));
+                return instance ? instance : (instance = Resources.Load<InputSetting>("InputSetting"));
             }
         }
 
