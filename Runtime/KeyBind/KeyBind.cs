@@ -149,21 +149,33 @@ namespace TSKT
             Dictionary<string, float> axisPositions)
         {
             SendSelected();
-            foreach (var it in downKeys)
+
+            foreach (var keyBind in keyBindsBuffer.Items)
             {
-                if (SendOnKeyDown(it))
+                foreach (var key in downKeys)
+                {
+                    if (keyBind.OnKeyDown(key))
+                    {
+                        return;
+                    }
+                }
+                foreach (var upKey in upKeys)
+                {
+                    if (keyBind.OnKeyUp(upKey))
+                    {
+                        return;
+                    }
+                }
+                if (keyBind.OnAxis(axisPositions))
                 {
                     return;
                 }
-            }
-            foreach (var it in upKeys)
-            {
-                if (SendOnKeyUp(it))
+
+                if (keyBind.BlockingSignals)
                 {
-                    return;
+                    break;
                 }
             }
-            SendOnAxis(axisPositions);
         }
 
         static void SendSelected()
@@ -182,57 +194,6 @@ namespace TSKT
                     }
                 }
             }
-        }
-
-        static bool SendOnKeyDown(string key)
-        {
-            foreach (var keyBind in keyBindsBuffer.Items)
-            {
-                if (keyBind.OnKeyDown(key))
-                {
-                    return true;
-                }
-                if (keyBind.BlockingSignals)
-                {
-                    break;
-                }
-            }
-
-            return false;
-        }
-
-        static bool SendOnKeyUp(string key)
-        {
-            foreach (var keyBind in keyBindsBuffer.Items)
-            {
-                if (keyBind.OnKeyUp(key))
-                {
-                    return true;
-                }
-                if (keyBind.BlockingSignals)
-                {
-                    break;
-                }
-            }
-
-            return false;
-        }
-
-        static bool SendOnAxis(Dictionary<string, float> axisPositions)
-        {
-            foreach (var keyBind in keyBindsBuffer.Items)
-            {
-                if (keyBind.OnAxis(axisPositions))
-                {
-                    return true;
-                }
-                if (keyBind.BlockingSignals)
-                {
-                    break;
-                }
-            }
-
-            return false;
         }
     }
 }
