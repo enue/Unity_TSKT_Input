@@ -1,12 +1,8 @@
-# Unty_TSKT_Input
+# install
 
-Packages/manifest.json
+Unity Package Manager
 
-```json
-{
-  "dependencies": {
-    "com.github.enue.tskt_input": "https://github.com/enue/Unity_TSKT_Input.git",
-  }
-}
-```
+add package from git url
+
++ `https://github.com/enue/Unity_TSKT_Input.git?path=Assets/Package`
 
