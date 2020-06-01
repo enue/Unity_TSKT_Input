@@ -15,22 +15,50 @@ namespace TSKT
         readonly Dictionary<string, float> axisPositions = new Dictionary<string, float>();
 
         public IInput AppInput { get; set; } = new DefaultInput();
+
         MergedKeyAssign keyAssign;
+        MergedKeyAssign KeyAssign
+        {
+            get
+            {
+                if (keyAssign.keys == null)
+                {
+                    if (defaultKeyAssign)
+                    {
+                        if (subKeyAssigns == null || subKeyAssigns.Length == 0)
+                        {
+                            SetKeyAssign(defaultKeyAssign);
+                        }
+                        else
+                        {
+                            SetKeyAssign(new[] { defaultKeyAssign }.Concat(subKeyAssigns).ToArray());
+                        }
+                    }
+                    else
+                    {
+                        if (subKeyAssigns == null || subKeyAssigns.Length == 0)
+                        {
+                            // nop
+                        }
+                        else
+                        {
+                            SetKeyAssign(subKeyAssigns);
+                        }
+                    }
+                }
+                return keyAssign;
+            }
+        }
 
         [SerializeField]
         KeyAssign defaultKeyAssign = default;
 
+        [SerializeField]
+        KeyAssign[] subKeyAssigns = default;
+
         void Awake()
         {
             Instance = this;
-        }
-
-        void Start()
-        {
-            if (keyAssign.keys == null && defaultKeyAssign)
-            {
-                SetKeyAssign(defaultKeyAssign);
-            }
         }
 
         void OnDestroy()
@@ -48,11 +76,11 @@ namespace TSKT
 
         public bool GetButtonDown(string button)
         {
-            if (keyAssign.keys == null)
+            if (KeyAssign.keys == null)
             {
                 return false;
             }
-            foreach (var it in keyAssign.keys)
+            foreach (var it in KeyAssign.keys)
             {
                 if (it.name == button)
                 {
@@ -67,11 +95,11 @@ namespace TSKT
 
         public bool GetButton(string button)
         {
-            if (keyAssign.keys == null)
+            if (KeyAssign.keys == null)
             {
                 return false;
             }
-            foreach (var it in keyAssign.keys)
+            foreach (var it in KeyAssign.keys)
             {
                 if (it.name == button)
                 {
@@ -86,7 +114,7 @@ namespace TSKT
 
         void Update()
         {
-            if (keyAssign.keys == null)
+            if (KeyAssign.keys == null)
             {
                 return;
             }
@@ -94,7 +122,7 @@ namespace TSKT
             upKeys.Clear();
             axisPositions.Clear();
 
-            foreach (var it in keyAssign.keys)
+            foreach (var it in KeyAssign.keys)
             {
                 if (AppInput.GetKeyDown(it))
                 {
@@ -110,7 +138,7 @@ namespace TSKT
                 }
             }
 
-            foreach (var it in keyAssign.axisButtons)
+            foreach (var it in KeyAssign.axisButtons)
             {
                 var axisPosition = AppInput.GetAxis(it);
                 if (axisPosition == 0f)
@@ -129,7 +157,7 @@ namespace TSKT
                     axisPositions[it.appKey] = axisPosition;
                 }
             }
-            foreach (var it in keyAssign.axes)
+            foreach (var it in KeyAssign.axes)
             {
                 var axisPosition = AppInput.GetAxis(it);
                 if (axisPosition == 0f)
