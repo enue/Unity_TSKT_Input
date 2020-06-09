@@ -3,74 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using UniRx.Async;
+using Cysharp.Threading.Tasks;
 
 namespace TSKT
 {
     public class CursorController : KeyBind
     {
-        struct Axis
-        {
-            public const float DefaultThreshold = 0.2f;
-            const float FirstInterval = 0.5f;
-            const float SecondInterval = 0.1f;
-            float startedPressingTime;
-            float previousElapsedTime;
-            int previousFrame;
-
-            public float Threshold { private get; set; }
-
-            public bool Update(out int pulse, float axisPosition)
-            {
-                if ((axisPosition * axisPosition) < (Threshold * Threshold))
-                {
-                    pulse = 0;
-                    return false;
-                }
-
-                if (previousFrame != Time.frameCount - 1)
-                {
-                    startedPressingTime = Time.realtimeSinceStartup;
-                    previousElapsedTime = -1f;
-                }
-                previousFrame = Time.frameCount;
-
-                var elapsedTime = Time.realtimeSinceStartup - startedPressingTime;
-
-                int a;
-                int b;
-                if (elapsedTime < FirstInterval)
-                {
-                    a = Mathf.FloorToInt(elapsedTime / FirstInterval);
-                    b = Mathf.FloorToInt(previousElapsedTime / FirstInterval);
-                }
-                else
-                {
-                    a = Mathf.FloorToInt(elapsedTime / SecondInterval);
-                    b = Mathf.FloorToInt(previousElapsedTime / SecondInterval);
-                }
-
-                if (a != b)
-                {
-                    if (axisPosition < 0f)
-                    {
-                        pulse = -1;
-                    }
-                    else
-                    {
-                        pulse = 1;
-                    }
-                }
-                else
-                {
-                    pulse = 0;
-                }
-
-                previousElapsedTime = elapsedTime;
-                return true;
-            }
-        }
-
         public enum Direction
         {
             Vertical = 0,
@@ -91,6 +29,12 @@ namespace TSKT
 
         [SerializeField]
         ScrollRect scrollRect = default;
+
+        [SerializeField]
+        float minPadding = 0f;
+
+        [SerializeField]
+        float maxPadding = 0f;
 
         [SerializeField]
         [Range(0, 20)]
@@ -136,7 +80,7 @@ namespace TSKT
                         _currentItem = ArrayUtil.MaxBy<GameObject, IEnumerable<GameObject>, float>(items.Where(_ => _), _ => {
                             ((RectTransform)_.transform).GetWorldCorners(cornersBuffer);
                             return cornersBuffer.Max(corner => Vector3.Dot(angle, corner));
-                            });
+                        });
                     }
                     else
                     {
@@ -155,8 +99,7 @@ namespace TSKT
             }
         }
 
-        Axis horizontalAxis = new Axis() { Threshold = Axis.DefaultThreshold };
-        Axis verticalAxis = new Axis() { Threshold = Axis.DefaultThreshold };
+        readonly AxisNormalizer axisNormalizer = new AxisNormalizer();
 
         readonly Dictionary<GameObject, ScrollRect> scrollRectCache = new Dictionary<GameObject, ScrollRect>();
         readonly Dictionary<GameObject, Selectable> selectableCache = new Dictionary<GameObject, Selectable>();
@@ -170,8 +113,8 @@ namespace TSKT
             {
                 if (_graph == null)
                 {
-                    horizontalAxis.Threshold = Axis.DefaultThreshold;
-                    verticalAxis.Threshold = Axis.DefaultThreshold;
+                    axisNormalizer.HorizontalThreshold = AxisNormalizer.DefaultThreshold;
+                    axisNormalizer.VerticalThreshold = AxisNormalizer.DefaultThreshold;
 
                     if (direction == Direction.Auto)
                     {
@@ -200,7 +143,7 @@ namespace TSKT
                                 if (countPerPage != 0)
                                 {
                                     // ページ送りはグイっと押し込まないときかないようにする
-                                    horizontalAxis.Threshold = 0.95f;
+                                    axisNormalizer.HorizontalThreshold = 0.95f;
                                     var left = items[Mathf.Clamp(i - countPerPage, 0, items.Count - 1)];
                                     if (left != items[i])
                                     {
@@ -221,7 +164,7 @@ namespace TSKT
                                 if (countPerPage != 0)
                                 {
                                     // ページ送りはグイっと押し込まないときかないようにする
-                                    verticalAxis.Threshold = 0.95f;
+                                    axisNormalizer.VerticalThreshold = 0.95f;
                                     var up = items[Mathf.Clamp(i - countPerPage, 0, items.Count - 1)];
                                     if (up != items[i])
                                     {
@@ -351,55 +294,11 @@ namespace TSKT
 
         public override bool OnAxis(Dictionary<string, float> axisPositions)
         {
-            bool input = false;
-            var pulse = Vector2Int.zero;
-            var axis = Vector2.zero;
+            Vector2 axis;
+            axisPositions.TryGetValue("Horizontal", out axis.x);
+            axisPositions.TryGetValue("Vertical", out axis.y);
 
-            {
-                // 斜め移動は許可しない。どちらかを破棄する。
-
-                axisPositions.TryGetValue("Horizontal", out var horizontalAxis);
-                axisPositions.TryGetValue("Vertical", out var verticalAxis);
-
-                if (horizontalAxis == 0f && verticalAxis == 0f)
-                {
-                    return false;
-                }
-
-                // 絶対値でとっているのでangleは0-90までの値になる。
-                var angle = Mathf.Atan2(Mathf.Abs(verticalAxis), Mathf.Abs(horizontalAxis))
-                    * Mathf.Rad2Deg;
-
-                if (angle < 90f / 4f)
-                {
-                    if (this.horizontalAxis.Update(out var horizontalPulse, horizontalAxis))
-                    {
-                        input = true;
-                        axis.x = horizontalAxis;
-                    }
-                    pulse.x = horizontalPulse;
-                }
-                else if (angle > 90f * 3f / 4f)
-                {
-                    if (this.verticalAxis.Update(out var verticalPulse, verticalAxis))
-                    {
-                        input = true;
-                        axis.y = verticalAxis;
-                    }
-                    verticalPulse *= -1;
-                    pulse.y = verticalPulse;
-                }
-                else
-                {
-                    // 斜めすぎる場合は両方破棄
-                    return false;
-                }
-            }
-
-            if (!input)
-            {
-                return false;
-            }
+            var pulse = axisNormalizer.GetPulse(out var normalziedAxis, axis, supportEightDirections: false);
 
             if (pulse.sqrMagnitude != 0)
             {
@@ -416,7 +315,8 @@ namespace TSKT
                     {
                         break;
                     }
-                    var next = nexts[pulse.x, pulse.y];
+                    // 上下反転
+                    var next = nexts[pulse.x, -pulse.y];
                     if (!next)
                     {
                         break;
@@ -456,7 +356,7 @@ namespace TSKT
                 RefreshCursor();
             }
 
-            if (axis.x != 0f)
+            if (normalziedAxis.x != 0)
             {
                 var slider = CurrentItem.GetComponent<Slider>();
                 if (slider)
@@ -478,7 +378,7 @@ namespace TSKT
             var scrollRect = GetScrollRectOf(CurrentItem);
             if (scrollRect)
             {
-                if (scrollRect.horizontal && axis.x != 0f)
+                if (scrollRect.horizontal && normalziedAxis.x != 0)
                 {
                     var pos = scrollRect.horizontalNormalizedPosition + Time.unscaledDeltaTime * axis.x;
                     if (scrollRect.movementType == ScrollRect.MovementType.Clamped)
@@ -488,7 +388,7 @@ namespace TSKT
                     scrollRect.horizontalNormalizedPosition = pos;
                     return false;
                 }
-                if (scrollRect.vertical && axis.y != 0)
+                if (scrollRect.vertical && normalziedAxis.y != 0)
                 {
                     var pos = scrollRect.verticalNormalizedPosition + Time.unscaledDeltaTime * axis.y;
                     if (scrollRect.movementType == ScrollRect.MovementType.Clamped)
@@ -519,10 +419,10 @@ namespace TSKT
                     var viewPortMaxY = cornersBuffer.Max(_ => _.y);
                     var viewPortMinY = cornersBuffer.Min(_ => _.y);
                     ((RectTransform)CurrentItem.transform).GetWorldCorners(cornersBuffer);
-                    var buttonMaxX = cornersBuffer.Max(_ => _.x);
-                    var buttonMinX = cornersBuffer.Min(_ => _.x);
-                    var buttonMaxY = cornersBuffer.Max(_ => _.y);
-                    var buttonMinY = cornersBuffer.Min(_ => _.y);
+                    var buttonMaxX = cornersBuffer.Max(_ => _.x) + maxPadding;
+                    var buttonMinX = cornersBuffer.Min(_ => _.x) - minPadding;
+                    var buttonMaxY = cornersBuffer.Max(_ => _.y) + maxPadding;
+                    var buttonMinY = cornersBuffer.Min(_ => _.y) - minPadding;
 
                     var worldLength = Vector3.zero;
                     if (scrollRect.horizontal)
@@ -537,6 +437,7 @@ namespace TSKT
                             var length = viewPortMinX - buttonMinX;
                             worldLength = new Vector3(length, 0f, 0f);
                         }
+                        Debug.Assert(!scrollRect.vertical, "両方向スクロールには非対応です");
                     }
                     else if (scrollRect.vertical)
                     {
