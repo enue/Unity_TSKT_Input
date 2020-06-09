@@ -13,12 +13,12 @@ namespace TSKT
             int previousIndex;
             Vector2Int previousAxis;
 
-            readonly float repeadDelay;
+            readonly float repeatDelay;
             readonly float repeatInterval;
 
             public Timer(float repeatDelay, float repeatInterval)
             {
-                this.repeadDelay = repeatDelay;
+                this.repeatDelay = repeatDelay;
                 this.repeatInterval = repeatInterval;
                 startedPressingTime = default;
                 previousFrame = default;
@@ -49,12 +49,12 @@ namespace TSKT
                 previousFrame = Time.frameCount;
                 var elapsedTime = Time.realtimeSinceStartup - startedPressingTime;
 
-                if (elapsedTime < repeadDelay)
+                if (elapsedTime < repeatDelay)
                 {
                     return false;
                 }
 
-                var index = Mathf.FloorToInt((elapsedTime - repeadDelay) / repeatInterval) + 1;
+                var index = Mathf.FloorToInt((elapsedTime - repeatDelay) / repeatInterval) + 1;
 
                 var result = index != previousIndex;
                 previousIndex = index;
