@@ -52,24 +52,24 @@ namespace TSKT
 
         public override bool OnAxis(Dictionary<string, float> axisPositions)
         {
-            foreach (var pair in axisPositions)
+            if (onAxis == null)
             {
-                if (pair.Value == 0f)
-                {
-                    continue;
-                }
-
-                if (pair.Key != key)
-                {
-                    continue;
-                }
-                if (onAxis != null && onAxis.GetPersistentEventCount() > 0)
-                {
-                    onAxis.Invoke();
-                    return true;
-                }
+                return false;
             }
-            return false;
+            if (onAxis.GetPersistentEventCount() == 0)
+            {
+                return false;
+            }
+            if (!axisPositions.TryGetValue(key, out var value))
+            {
+                return false;
+            }
+            if (value == 0f)
+            {
+                return false;
+            }
+            onAxis.Invoke();
+            return true;
         }
         public override void OnSelected()
         {
