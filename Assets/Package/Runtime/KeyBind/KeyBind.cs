@@ -138,6 +138,7 @@ namespace TSKT
         public abstract bool BlockingSignals { get; }
         public abstract bool OnKeyDown(string key);
         public abstract bool OnKeyUp(string key);
+        public abstract bool OnKey(string key);
         public abstract bool OnAxis(Dictionary<string, float> axisPositions);
         public abstract void OnSelected();
 
@@ -169,6 +170,16 @@ namespace TSKT
                 if (keyBind.OnAxis(axisPositions))
                 {
                     return;
+                }
+                foreach (var it in axisPositions)
+                {
+                    if (it.Value != 0f)
+                    {
+                        if (keyBind.OnKey(it.Key))
+                        {
+                            return;
+                        }
+                    }
                 }
 
                 if (keyBind.BlockingSignals)

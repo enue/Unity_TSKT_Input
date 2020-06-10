@@ -37,6 +37,11 @@ namespace TSKT
         {
             return false;
         }
+        public override bool OnKey(string key)
+        {
+            return false;
+        }
+
         public override void OnSelected()
         {
             // nop

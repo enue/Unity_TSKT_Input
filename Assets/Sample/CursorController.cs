@@ -292,6 +292,11 @@ namespace TSKT
             return false;
         }
 
+        public override bool OnKey(string key)
+        {
+            return false;
+        }
+
         public override bool OnAxis(Dictionary<string, float> axisPositions)
         {
             Vector2 axis;
