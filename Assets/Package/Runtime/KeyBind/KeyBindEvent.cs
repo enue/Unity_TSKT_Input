@@ -8,6 +8,9 @@ namespace TSKT
 {
     public class KeyBindEvent : KeyBind
     {
+        [System.Serializable]
+        public class OnAxisEvent : UnityEngine.Events.UnityEvent<float> { }
+
         [SerializeField]
         string key = default;
 
@@ -20,7 +23,10 @@ namespace TSKT
         UnityEngine.Events.UnityEvent onKeyUp = default;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent onAxis = default;
+        OnAxisEvent onAxis = default;
+
+        int previousFrame;
+        float downTime;
 
         public override bool OnKeyDown(string key)
         {
@@ -28,6 +34,9 @@ namespace TSKT
             {
                 return false;
             }
+
+            Refresh();
+
             if (onKeyDown != null && onKeyDown.GetPersistentEventCount() > 0)
             {
                 onKeyDown.Invoke();
@@ -52,6 +61,14 @@ namespace TSKT
 
         public override bool OnAxis(Dictionary<string, float> axisPositions)
         {
+            axisPositions.TryGetValue(key, out var value);
+            if (value == 0f)
+            {
+                return false;
+            }
+
+            Refresh();
+
             if (onAxis == null)
             {
                 return false;
@@ -60,20 +77,22 @@ namespace TSKT
             {
                 return false;
             }
-            if (!axisPositions.TryGetValue(key, out var value))
-            {
-                return false;
-            }
-            if (value == 0f)
-            {
-                return false;
-            }
-            onAxis.Invoke();
+
+            onAxis?.Invoke(Time.realtimeSinceStartup - downTime);
             return true;
         }
         public override void OnSelected()
         {
             // nop
+        }
+
+        void Refresh()
+        {
+            if (previousFrame < Time.frameCount - 1)
+            {
+                downTime = Time.realtimeSinceStartup;
+            }
+            previousFrame = Time.frameCount;
         }
     }
 }
