@@ -6,7 +6,6 @@ using System;
 
 namespace TSKT
 {
-    [RequireComponent(typeof(Button))]
     public class BindStick : KeyBind
     {
         [SerializeField]
