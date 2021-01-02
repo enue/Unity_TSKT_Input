@@ -15,6 +15,9 @@ namespace TSKT
         string verticalAxis = default;
 
         [SerializeField]
+        bool exclusive = true;
+
+        [SerializeField]
         UnityEngine.Events.UnityEvent<Vector2> onStickTilt = default;
 
         public override bool BlockingSignals => false;
@@ -36,7 +39,7 @@ namespace TSKT
             if (horizontalPosition != 0f || verticalPosition != 0f)
             {
                 onStickTilt.Invoke(new Vector2(horizontalPosition, verticalPosition));
-                return true;
+                return exclusive;
             }
 
             return false;

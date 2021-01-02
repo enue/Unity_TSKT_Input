@@ -14,6 +14,9 @@ namespace TSKT
         [SerializeField]
         string key = default;
 
+        [SerializeField]
+        bool exclusive = true;
+
         public override bool BlockingSignals => false;
 
         [SerializeField]
@@ -43,7 +46,7 @@ namespace TSKT
             if (onKeyDown != null && onKeyDown.GetPersistentEventCount() > 0)
             {
                 onKeyDown.Invoke();
-                return true;
+                return exclusive;
             }
             return false;
         }
@@ -57,7 +60,7 @@ namespace TSKT
             if (onKeyUp != null && onKeyUp.GetPersistentEventCount() > 0)
             {
                 onKeyUp.Invoke();
-                return true;
+                return exclusive;
             }
             return false;
         }
@@ -82,7 +85,7 @@ namespace TSKT
             }
 
             onAxis?.Invoke(value);
-            return true;
+            return exclusive;
         }
 
         public override bool OnKey(string key)
@@ -97,7 +100,7 @@ namespace TSKT
             if (onKey != null && onKey.GetPersistentEventCount() > 0)
             {
                 onKey.Invoke(Time.realtimeSinceStartup - downTime);
-                return true;
+                return exclusive;
             }
             return false;
         }
