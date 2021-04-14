@@ -10,7 +10,6 @@ namespace TSKT
         struct KeyBindBuffer
         {
             int lastRefreshedTime;
-            List<(RenderOrder position, KeyBind keyBind)> keyBindPositions;
 
             List<KeyBind> items;
             public List<KeyBind> Items
@@ -28,67 +27,60 @@ namespace TSKT
 
             void Refresh()
             {
-                if (keyBindPositions == null)
+                using (UnityEngine.Pool.ListPool<(RenderOrder position, KeyBind keyBind)>.Get(out var keyBindPositions))
                 {
-                    keyBindPositions = new List<(RenderOrder position, KeyBind keyBind)>();
-                }
-                else
-                {
-                    keyBindPositions.Clear();
-                }
-                RenderOrder? maxInterceptor = default;
+                    RenderOrder? maxInterceptor = default;
 
-                foreach (var keyBind in Instances)
-                {
-                    if (!keyBind)
+                    foreach (var keyBind in Instances)
                     {
-                        continue;
-                    }
-                    if (!keyBind.gameObject.activeInHierarchy)
-                    {
-                        continue;
-                    }
-
-                    keyBind.RefreshRootCanvas();
-                    var position = new RenderOrder(keyBind.RootCanvas, keyBind.transform, keyBind.orderInObject);
-
-                    if (maxInterceptor.HasValue)
-                    {
-                        if (maxInterceptor > position)
+                        if (!keyBind)
                         {
                             continue;
                         }
+                        if (!keyBind.gameObject.activeInHierarchy)
+                        {
+                            continue;
+                        }
+
+                        keyBind.RefreshRootCanvas();
+                        var position = new RenderOrder(keyBind.RootCanvas, keyBind.transform, keyBind.orderInObject);
+
+                        if (maxInterceptor.HasValue)
+                        {
+                            if (maxInterceptor > position)
+                            {
+                                continue;
+                            }
+                        }
+
+                        keyBindPositions.Add((position, keyBind));
+
+                        if (keyBind.BlockingSignals)
+                        {
+                            maxInterceptor = position;
+                        }
                     }
-
-                    keyBindPositions.Add((position, keyBind));
-
-                    if (keyBind.BlockingSignals)
+                    // メソッドを直接渡すとGCが発生するのでラムダにする
+                    // 降順にしたいので符号を反転させる
+                    keyBindPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
+                    if (items == null)
                     {
-                        maxInterceptor = position;
+                        items = new List<KeyBind>(Instances.Count);
                     }
-                }
-                // メソッドを直接渡すとGCが発生するのでラムダにする
-                // 降順にしたいので符号を反転させる
-                keyBindPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
-                if (items == null)
-                {
-                    items = new List<KeyBind>(Instances.Count);
-                }
-                else
-                {
-                    items.Clear();
-                }
-
-                foreach (var (position, keyBind) in keyBindPositions)
-                {
-                    items.Add(keyBind);
-                    if (keyBind.BlockingSignals)
+                    else
                     {
-                        break;
+                        items.Clear();
+                    }
+
+                    foreach (var (position, keyBind) in keyBindPositions)
+                    {
+                        items.Add(keyBind);
+                        if (keyBind.BlockingSignals)
+                        {
+                            break;
+                        }
                     }
                 }
-
-                keyBindPositions.Clear();
             }
         }
 

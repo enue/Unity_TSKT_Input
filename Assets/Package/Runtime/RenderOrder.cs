@@ -150,7 +150,7 @@ namespace TSKT
             return 0;
         }
 
-        public int CompareTo(RenderOrder other)
+        readonly public int CompareTo(RenderOrder other)
         {
             return Compare(this, other);
         }
