@@ -22,7 +22,7 @@ namespace TSKT
 
         public override bool BlockingSignals => false;
 
-        public override bool OnKeyDown(string key)
+        public override bool OnKeyDown(List<string> keys)
         {
             return false;
         }

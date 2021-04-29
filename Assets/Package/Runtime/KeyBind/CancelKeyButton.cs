@@ -16,9 +16,9 @@ namespace TSKT
         bool blockingSignals = false;
         public override bool BlockingSignals => blockingSignals;
 
-        public override bool OnKeyDown(string key)
+        public override bool OnKeyDown(List<string> keys)
         {
-            if (key == InputSetting.Instance.Cancel)
+            if (keys.Contains(InputSetting.Instance.Cancel))
             {
                 if (Button.isActiveAndEnabled && Button.interactable)
                 {

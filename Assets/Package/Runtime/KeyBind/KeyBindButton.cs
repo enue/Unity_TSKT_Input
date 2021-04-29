@@ -17,9 +17,9 @@ namespace TSKT
         Button button;
         Button Button => button ? button : (button = GetComponent<Button>());
 
-        public override bool OnKeyDown(string key)
+        public override bool OnKeyDown(List<string> keys)
         {
-            if (key == this.key)
+            if (keys.Contains(key))
             {
                 if (Button.isActiveAndEnabled && Button.interactable)
                 {

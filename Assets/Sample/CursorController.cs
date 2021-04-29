@@ -248,9 +248,10 @@ namespace TSKT
             RefreshCursor();
         }
 
-        public override bool OnKeyDown(string button)
+
+        public override bool OnKeyDown(List<string> buttons)
         {
-            if (button == InputSetting.Instance.Submit)
+            if (buttons.Contains(InputSetting.Instance.Submit))
             {
                 if (Cursor.Instance.IsMouseMode)
                 {

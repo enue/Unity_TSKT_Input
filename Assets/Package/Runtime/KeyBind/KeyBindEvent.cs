@@ -34,9 +34,9 @@ namespace TSKT
         int previousFrame;
         float downTime;
 
-        public override bool OnKeyDown(string key)
+        public override bool OnKeyDown(List<string> keys)
         {
-            if (this.key != key)
+            if (!keys.Contains(key))
             {
                 return false;
             }

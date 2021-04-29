@@ -11,7 +11,7 @@ namespace TSKT
     {
         public override bool BlockingSignals => true;
 
-        public override bool OnKeyDown(string key)
+        public override bool OnKeyDown(List<string> keys)
         {
             return true;
         }
