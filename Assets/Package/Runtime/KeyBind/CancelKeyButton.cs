@@ -29,7 +29,7 @@ namespace TSKT
             return false;
         }
 
-        public override bool OnKeyUp(string key)
+        public override bool OnKeyUp(List<string> keys)
         {
             return false;
         }

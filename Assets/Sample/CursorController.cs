@@ -288,7 +288,7 @@ namespace TSKT
             return false;
         }
 
-        public override bool OnKeyUp(string button)
+        public override bool OnKeyUp(List<string> buttons)
         {
             return false;
         }
