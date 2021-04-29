@@ -130,7 +130,7 @@ namespace TSKT
         public abstract bool BlockingSignals { get; }
         public abstract bool OnKeyDown(List<string> keys);
         public abstract bool OnKeyUp(List<string> keys);
-        public abstract bool OnKey(string key);
+        public abstract bool OnKey(List<string> keys);
         public abstract bool OnAxis(Dictionary<string, float> axisPositions);
         public abstract void OnSelected();
 
@@ -139,7 +139,8 @@ namespace TSKT
         public static void SendSignals(
             List<string> downKeys,
             List<string> upKeys,
-            Dictionary<string, float> axisPositions)
+            Dictionary<string, float> axisPositions,
+            List<string> onKeys)
         {
             SendSelected();
 
@@ -149,7 +150,7 @@ namespace TSKT
                 {
                     return;
                 }
-                
+
                 if (keyBind.OnKeyUp(upKeys))
                 {
                     return;
@@ -159,15 +160,9 @@ namespace TSKT
                 {
                     return;
                 }
-                foreach (var it in axisPositions)
+                if (keyBind.OnKey(onKeys))
                 {
-                    if (it.Value != 0f)
-                    {
-                        if (keyBind.OnKey(it.Key))
-                        {
-                            return;
-                        }
-                    }
+                    return;
                 }
 
                 if (keyBind.BlockingSignals)

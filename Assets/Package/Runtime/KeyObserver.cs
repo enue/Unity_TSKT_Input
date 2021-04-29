@@ -171,8 +171,17 @@ namespace TSKT
                         axisPositions[it.name] = axisPosition;
                     }
                 }
-
-                KeyBind.SendSignals(downKeys, upKeys, axisPositions);
+                using (UnityEngine.Pool.ListPool<string>.Get(out var onKeys))
+                {
+                    foreach(var it in axisPositions)
+                    {
+                        if (it.Value != 0f)
+                        {
+                            onKeys.Add(it.Key);
+                        }
+                    }
+                    KeyBind.SendSignals(downKeys, upKeys, axisPositions, onKeys);
+                }
             }
         }
     }

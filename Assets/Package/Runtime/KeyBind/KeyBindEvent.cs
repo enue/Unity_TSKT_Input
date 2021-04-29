@@ -88,9 +88,9 @@ namespace TSKT
             return exclusive;
         }
 
-        public override bool OnKey(string key)
+        public override bool OnKey(List<string> keys)
         {
-            if (this.key != key)
+            if (!keys.Contains(key))
             {
                 return false;
             }

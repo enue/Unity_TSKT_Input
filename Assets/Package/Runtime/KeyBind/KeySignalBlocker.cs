@@ -26,7 +26,7 @@ namespace TSKT
             return true;
         }
 
-        public override bool OnKey(string key)
+        public override bool OnKey(List<string> keys)
         {
             return true;
         }
