@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
     [RequireComponent(typeof(Button))]
     public class CancelKeyButton : KeyBind
     {
-        Button button;
-        Button Button => button ? button : (button = GetComponent<Button>());
+        Button? button;
+        Button Button => button ? button! : (button = GetComponent<Button>());
 
         [SerializeField]
         bool blockingSignals = false;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
@@ -10,12 +11,12 @@ namespace TSKT
     public class KeyBindButton : KeyBind
     {
         [SerializeField]
-        string key = default;
+        string key = "";
 
         public override bool BlockingSignals => false;
 
-        Button button;
-        Button Button => button ? button : (button = GetComponent<Button>());
+        Button? button;
+        Button Button => button ? button! : (button = GetComponent<Button>());
 
         public override bool OnKeyDown(List<string> keys)
         {

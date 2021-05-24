@@ -3,22 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
     public class BindStick : KeyBind
     {
         [SerializeField]
-        string horizontalAxis = default;
+        string horizontalAxis = "";
 
         [SerializeField]
-        string verticalAxis = default;
+        string verticalAxis = "";
 
         [SerializeField]
         bool exclusive = true;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent<Vector2> onStickTilt = default;
+        UnityEngine.Events.UnityEvent<Vector2> onStickTilt = new UnityEngine.Events.UnityEvent<Vector2>();
 
         public override bool BlockingSignals => false;
 
@@ -34,11 +35,11 @@ namespace TSKT
 
         public override bool OnAxis(Dictionary<string, float> axisPositions)
         {
-            axisPositions.TryGetValue(horizontalAxis, out var horizontalPosition);
-            axisPositions.TryGetValue(verticalAxis, out var verticalPosition);
+            axisPositions.TryGetValue(horizontalAxis!, out var horizontalPosition);
+            axisPositions.TryGetValue(verticalAxis!, out var verticalPosition);
             if (horizontalPosition != 0f || verticalPosition != 0f)
             {
-                onStickTilt.Invoke(new Vector2(horizontalPosition, verticalPosition));
+                onStickTilt!.Invoke(new Vector2(horizontalPosition, verticalPosition));
                 return exclusive;
             }
 

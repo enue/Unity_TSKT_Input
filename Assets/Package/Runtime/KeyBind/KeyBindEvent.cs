@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
@@ -12,7 +13,7 @@ namespace TSKT
         public class FloatEvent : UnityEngine.Events.UnityEvent<float> { }
 
         [SerializeField]
-        string key = default;
+        string key = "";
 
         [SerializeField]
         bool exclusive = true;
@@ -20,16 +21,16 @@ namespace TSKT
         public override bool BlockingSignals => false;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent onKeyDown = default;
+        UnityEngine.Events.UnityEvent onKeyDown = new UnityEngine.Events.UnityEvent();
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent onKeyUp = default;
+        UnityEngine.Events.UnityEvent onKeyUp = new UnityEngine.Events.UnityEvent();
 
         [SerializeField]
-        FloatEvent onKey = default;
+        FloatEvent onKey = new FloatEvent();
 
         [SerializeField]
-        FloatEvent onAxis = default;
+        FloatEvent onAxis = new FloatEvent();
 
         int previousFrame;
         float downTime;

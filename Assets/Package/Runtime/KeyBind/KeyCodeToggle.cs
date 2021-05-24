@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
@@ -14,8 +15,8 @@ namespace TSKT
 
         public override bool BlockingSignals => false;
 
-        Toggle toggle;
-        Toggle Toggle => toggle ? toggle : (toggle = GetComponent<Toggle>());
+        Toggle? toggle;
+        Toggle Toggle => toggle ? toggle! : (toggle = GetComponent<Toggle>());
 
         public override bool OnKeyDown(List<string> keys)
         {

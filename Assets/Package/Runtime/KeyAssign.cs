@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#nullable enable
 
 namespace TSKT
 {
@@ -30,15 +31,15 @@ namespace TSKT
         }
 
         [SerializeField]
-        AppKey[] appKeys = default;
+        AppKey[] appKeys = new AppKey[0];
         public AppKey[] AppKeys => appKeys;
 
         [SerializeField]
-        AppAxis[] appAxes = default;
+        AppAxis[] appAxes = new AppAxis[0];
         public AppAxis[] AppAxes => appAxes;
 
         [SerializeField]
-        AxisButton[] axisButtons = default;
+        AxisButton[] axisButtons = new AxisButton[0];
         public AxisButton[] AxisButtons => axisButtons;
 
     }

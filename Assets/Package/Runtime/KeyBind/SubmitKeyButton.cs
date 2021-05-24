@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+#nullable enable
 
 namespace TSKT
 {
@@ -13,8 +14,8 @@ namespace TSKT
         bool blockingSignals = true;
         public override bool BlockingSignals => blockingSignals;
 
-        Button button;
-        Button Button => button ? button : (button = GetComponent<Button>());
+        Button? button;
+        Button Button => button ? button! : (button = GetComponent<Button>());
 
         public override bool OnKeyDown(List<string> keys)
         {

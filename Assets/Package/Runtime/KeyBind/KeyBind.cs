@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+#nullable enable
 
 namespace TSKT
 {
@@ -43,7 +44,8 @@ namespace TSKT
                         }
 
                         keyBind.RefreshRootCanvas();
-                        var position = new RenderOrder(keyBind.RootCanvas, keyBind.transform, keyBind.orderInObject);
+                        UnityEngine.Assertions.Assert.IsTrue(keyBind.RootCanvas);
+                        var position = new RenderOrder(keyBind.RootCanvas!, keyBind.transform, keyBind.orderInObject);
 
                         if (maxInterceptor.HasValue)
                         {
@@ -102,8 +104,8 @@ namespace TSKT
             Modified = true;
         }
 
-        Canvas rootCanvas;
-        public Canvas RootCanvas
+        Canvas? rootCanvas;
+        public Canvas? RootCanvas
         {
             get
             {
@@ -121,7 +123,7 @@ namespace TSKT
             {
                 return;
             }
-            if (!transform.IsChildOf(rootCanvas.transform))
+            if (!transform.IsChildOf(rootCanvas!.transform))
             {
                 rootCanvas = null;
             }

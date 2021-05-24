@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+#nullable enable
 
 namespace TSKT
 {
@@ -14,8 +15,8 @@ namespace TSKT
 
         public MergedKeyAssign(params KeyAssign[] keyAssigns)
         {
+            using (UnityEngine.Pool.ListPool<KeyAssign.AppKey>.Get(out var pairs))
             {
-                var pairs = new List<KeyAssign.AppKey>();
                 foreach (var it in keyAssigns)
                 {
                     pairs.AddRange(it.AppKeys);
@@ -24,8 +25,8 @@ namespace TSKT
                 distinctAppKeyNames = pairs.Select(_ => _.name).ToArray();
             }
 
+            using (UnityEngine.Pool.ListPool<KeyAssign.AppAxis>.Get(out var pairs))
             {
-                var pairs = new List<KeyAssign.AppAxis>();
                 foreach (var it in keyAssigns)
                 {
                     pairs.AddRange(it.AppAxes);
@@ -33,8 +34,8 @@ namespace TSKT
                 axes = pairs.ToArray();
             }
 
+            using (UnityEngine.Pool.ListPool<KeyAssign.AxisButton>.Get(out var pairs))
             {
-                var pairs = new List<KeyAssign.AxisButton>();
                 foreach (var it in keyAssigns)
                 {
                     pairs.AddRange(it.AxisButtons);

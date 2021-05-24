@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
+#nullable enable
 
 namespace TSKT
 {
     public class KeyObserver : MonoBehaviour
     {
-        public static KeyObserver Instance { get; private set; }
+        public static KeyObserver? Instance { get; private set; }
         public IInput AppInput { get; set; } = new DefaultInput();
 
         MergedKeyAssign keyAssign;
@@ -22,11 +23,11 @@ namespace TSKT
                     {
                         if (subKeyAssigns == null || subKeyAssigns.Length == 0)
                         {
-                            SetKeyAssign(defaultKeyAssign);
+                            SetKeyAssign(defaultKeyAssign!);
                         }
                         else
                         {
-                            SetKeyAssign(new[] { defaultKeyAssign }.Concat(subKeyAssigns).ToArray());
+                            SetKeyAssign(new[] { defaultKeyAssign! }.Concat(subKeyAssigns).ToArray());
                         }
                     }
                     else
@@ -46,10 +47,10 @@ namespace TSKT
         }
 
         [SerializeField]
-        KeyAssign defaultKeyAssign = default;
+        KeyAssign? defaultKeyAssign = default;
 
         [SerializeField]
-        KeyAssign[] subKeyAssigns = default;
+        KeyAssign[] subKeyAssigns = new KeyAssign[0];
 
         void Awake()
         {
