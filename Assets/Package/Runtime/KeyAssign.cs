@@ -31,15 +31,15 @@ namespace TSKT
         }
 
         [SerializeField]
-        AppKey[] appKeys = new AppKey[0];
+        AppKey[] appKeys = default!;
         public AppKey[] AppKeys => appKeys;
 
         [SerializeField]
-        AppAxis[] appAxes = new AppAxis[0];
+        AppAxis[] appAxes = default!;
         public AppAxis[] AppAxes => appAxes;
 
         [SerializeField]
-        AxisButton[] axisButtons = new AxisButton[0];
+        AxisButton[] axisButtons = default!;
         public AxisButton[] AxisButtons => axisButtons;
 
     }

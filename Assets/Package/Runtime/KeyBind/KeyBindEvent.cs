@@ -13,7 +13,7 @@ namespace TSKT
         public class FloatEvent : UnityEngine.Events.UnityEvent<float> { }
 
         [SerializeField]
-        string key = "";
+        string key = default!;
 
         [SerializeField]
         bool exclusive = true;
@@ -21,16 +21,16 @@ namespace TSKT
         public override bool BlockingSignals => false;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent onKeyDown = new UnityEngine.Events.UnityEvent();
+        UnityEngine.Events.UnityEvent onKeyDown = default!;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent onKeyUp = new UnityEngine.Events.UnityEvent();
+        UnityEngine.Events.UnityEvent onKeyUp = default!;
 
         [SerializeField]
-        FloatEvent onKey = new FloatEvent();
+        FloatEvent onKey = default!;
 
         [SerializeField]
-        FloatEvent onAxis = new FloatEvent();
+        FloatEvent onAxis = default!;
 
         int previousFrame;
         float downTime;

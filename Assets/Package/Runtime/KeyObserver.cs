@@ -27,7 +27,9 @@ namespace TSKT
                         }
                         else
                         {
-                            SetKeyAssign(new[] { defaultKeyAssign! }.Concat(subKeyAssigns).ToArray());
+                            SetKeyAssign(new[] { defaultKeyAssign! }.Concat(
+                                subKeyAssigns.Where(_ => _).Select(_ => _!))
+                                .ToArray());
                         }
                     }
                     else
@@ -38,7 +40,7 @@ namespace TSKT
                         }
                         else
                         {
-                            SetKeyAssign(subKeyAssigns);
+                            SetKeyAssign(subKeyAssigns.Where(_ => _).Select(_ => _!).ToArray());
                         }
                     }
                 }
@@ -50,7 +52,7 @@ namespace TSKT
         KeyAssign? defaultKeyAssign = default;
 
         [SerializeField]
-        KeyAssign[] subKeyAssigns = new KeyAssign[0];
+        KeyAssign?[] subKeyAssigns = default!;
 
         void Awake()
         {

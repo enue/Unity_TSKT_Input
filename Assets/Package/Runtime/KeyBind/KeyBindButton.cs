@@ -11,7 +11,7 @@ namespace TSKT
     public class KeyBindButton : KeyBind
     {
         [SerializeField]
-        string key = "";
+        string key = default!;
 
         public override bool BlockingSignals => false;
 

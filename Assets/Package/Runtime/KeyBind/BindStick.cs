@@ -10,10 +10,10 @@ namespace TSKT
     public class BindStick : KeyBind
     {
         [SerializeField]
-        string horizontalAxis = "";
+        string horizontalAxis = default!;
 
         [SerializeField]
-        string verticalAxis = "";
+        string verticalAxis = default!;
 
         [SerializeField]
         bool exclusive = true;
