@@ -13,9 +13,6 @@ namespace TSKT
         [SerializeField]
         Image image = default;
 
-        [SerializeField]
-        UnityEngine.InputSystem.InputActionReference pointAction = default;
-
         RectTransform focusObject;
         Canvas focusObjectRootCanvas;
         RectTransform viewport;
@@ -88,7 +85,9 @@ namespace TSKT
             {
                 if (!IsMouseMode)
                 {
-                    if (pointAction.ToInputAction().triggered)
+                    var pos = UnityEngine.InputSystem.Pointer.current.position;
+                    var diff = pos.ReadValueFromPreviousFrame() - pos.ReadValue();
+                    if (diff.sqrMagnitude > 0f)
                     {
                         IsMouseMode = true;
                         UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
