@@ -86,7 +86,7 @@ namespace TSKT
             }
         }
 
-        static HashSet<KeyBind> Instances { get; } = new HashSet<KeyBind>();
+        static public HashSet<KeyBind> Instances { get; } = new HashSet<KeyBind>();
         static bool Modified { get; set; }
 
         [SerializeField]
@@ -130,46 +130,31 @@ namespace TSKT
         }
 
         public abstract bool BlockingSignals { get; }
-        public abstract bool OnKeyDown(List<string> keys);
-        public abstract bool OnKeyUp(List<string> keys);
-        public abstract bool OnKey(List<string> keys);
-        public abstract bool OnAxis(Dictionary<string, float> axisPositions);
         public abstract void OnSelected();
+        public abstract void Execute(out bool exclusive);
 
         static KeyBindBuffer keyBindsBuffer;
+        static int lastUpdatedFrame;
 
-        public static void SendSignals(
-            List<string> downKeys,
-            List<string> upKeys,
-            Dictionary<string, float> axisPositions,
-            List<string> onKeys)
+        void Update()
         {
+            if (lastUpdatedFrame == Time.frameCount)
+            {
+                return;
+            }
+            lastUpdatedFrame = Time.frameCount;
             SendSelected();
 
-            foreach (var keyBind in keyBindsBuffer.Items)
+            foreach (var item in keyBindsBuffer.Items)
             {
-                if (keyBind.OnKeyDown(downKeys))
-                {
-                    return;
-                }
-
-                if (keyBind.OnKeyUp(upKeys))
-                {
-                    return;
-                }
-
-                if (keyBind.OnAxis(axisPositions))
-                {
-                    return;
-                }
-                if (keyBind.OnKey(onKeys))
-                {
-                    return;
-                }
-
-                if (keyBind.BlockingSignals)
+                item.Execute(out var exclusive);
+                if (exclusive)
                 {
                     break;
+                }
+                if (item.BlockingSignals)
+                {
+                    break; ;
                 }
             }
         }

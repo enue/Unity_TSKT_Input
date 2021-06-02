@@ -12,24 +12,9 @@ namespace TSKT
     {
         public override bool BlockingSignals => true;
 
-        public override bool OnKeyDown(List<string> keys)
+        public override void Execute(out bool exclusive)
         {
-            return true;
-        }
-
-        public override bool OnKeyUp(List<string> buttons)
-        {
-            return true;
-        }
-
-        public override bool OnAxis(Dictionary<string, float> axisPositions)
-        {
-            return true;
-        }
-
-        public override bool OnKey(List<string> keys)
-        {
-            return true;
+            exclusive = true;
         }
 
         public override void OnSelected()

@@ -11,44 +11,32 @@ namespace TSKT
     public class KeyBindButton : KeyBind
     {
         [SerializeField]
-        string key = default!;
+        UnityEngine.InputSystem.InputActionReference action = default!;
 
-        public override bool BlockingSignals => false;
+        [SerializeField]
+        bool blockingSignals = false;
+        public override bool BlockingSignals => blockingSignals;
 
         Button? button;
         Button Button => button ? button! : (button = GetComponent<Button>());
 
-        public override bool OnKeyDown(List<string> keys)
+        public override void OnSelected()
         {
-            if (keys.Contains(key))
+            action.ToInputAction().Enable();
+        }
+
+        public override void Execute(out bool exclusive)
+        {
+            if (action.ToInputAction().triggered)
             {
                 if (Button.isActiveAndEnabled && Button.interactable)
                 {
                     Button.onClick.Invoke();
-                    return true;
+                    exclusive = true;
+                    return;
                 }
             }
-            return false;
-        }
-
-        public override bool OnKeyUp(List<string> keys)
-        {
-            return false;
-        }
-
-        public override bool OnAxis(Dictionary<string, float> axisPositions)
-        {
-            return false;
-        }
-
-        public override bool OnKey(List<string> keys)
-        {
-            return false;
-        }
-
-        public override void OnSelected()
-        {
-            // nop
+            exclusive = false;
         }
     }
 }

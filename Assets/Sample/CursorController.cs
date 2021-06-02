@@ -41,6 +41,12 @@ namespace TSKT
         int countPerPage = 0;
 
         [SerializeField]
+        UnityEngine.InputSystem.InputActionReference arrowAction = default!;
+
+        [SerializeField]
+        UnityEngine.InputSystem.InputActionReference submitAction = default!;
+
+        [SerializeField]
         bool blockingSignals = true;
         public override bool BlockingSignals => blockingSignals;
 
@@ -245,65 +251,60 @@ namespace TSKT
                 }
             }
 
+            submitAction.ToInputAction().Enable();
+            arrowAction.ToInputAction().Enable();
+
             RefreshCursor();
         }
 
-
-        public override bool OnKeyDown(List<string> buttons)
+        public override void Execute(out bool exclusive)
         {
-            if (buttons.Contains(InputSetting.Instance.Submit))
+            if (submitAction.ToInputAction().triggered)
             {
-                if (Cursor.Instance.IsMouseMode)
+                exclusive = Submit();
+                return;
+            }
+            var pos = arrowAction.ToInputAction().ReadValue<Vector2>();
+            exclusive = OnAxis(pos);
+        }
+
+        bool Submit()
+        {
+            if (Cursor.Instance.IsMouseMode)
+            {
+                Cursor.Instance.IsMouseMode = false;
+                return true;
+            }
+
+            var current = CurrentItem.GetComponent<Button>();
+            if (current)
+            {
+                if (current.IsInteractable())
                 {
-                    Cursor.Instance.IsMouseMode = false;
+                    current.onClick.Invoke();
                     return true;
                 }
-
-                var current = CurrentItem.GetComponent<Button>();
-                if (current)
+            }
+            else
+            {
+                var toggle = CurrentItem.GetComponent<Toggle>();
+                if (toggle)
                 {
-                    if (current.IsInteractable())
+                    if (toggle.group)
                     {
-                        current.onClick.Invoke();
-                        return true;
+                        toggle.isOn = true;
                     }
-                }
-                else
-                {
-                    var toggle = CurrentItem.GetComponent<Toggle>();
-                    if (toggle)
+                    else
                     {
-                        if (toggle.group)
-                        {
-                            toggle.isOn = true;
-                        }
-                        else
-                        {
-                            toggle.isOn = !toggle.isOn;
-                        }
+                        toggle.isOn = !toggle.isOn;
                     }
                 }
             }
-
             return false;
         }
 
-        public override bool OnKeyUp(List<string> buttons)
+        bool OnAxis(Vector2 axis)
         {
-            return false;
-        }
-
-        public override bool OnKey(List<string> keys)
-        {
-            return false;
-        }
-
-        public override bool OnAxis(Dictionary<string, float> axisPositions)
-        {
-            Vector2 axis;
-            axisPositions.TryGetValue("Horizontal", out axis.x);
-            axisPositions.TryGetValue("Vertical", out axis.y);
-
             var pulse = axisNormalizer.GetPulse(out var normalziedAxis, axis, supportEightDirections: false);
 
             if (pulse.sqrMagnitude != 0)
@@ -509,7 +510,6 @@ namespace TSKT
             selectableCache.Add(obj, result);
             return result;
         }
-
 
     }
 }

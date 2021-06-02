@@ -11,44 +11,32 @@ namespace TSKT
     public class KeyCodeToggle : KeyBind
     {
         [SerializeField]
-        KeyCode key = default;
+        UnityEngine.InputSystem.InputAction action = default!;
 
-        public override bool BlockingSignals => false;
+        [SerializeField]
+        bool blockingSignals = false;
+        public override bool BlockingSignals => blockingSignals;
 
         Toggle? toggle;
         Toggle Toggle => toggle ? toggle! : (toggle = GetComponent<Toggle>());
 
-        public override bool OnKeyDown(List<string> keys)
+        public override void OnSelected()
         {
-            if (Input.GetKeyDown(key))
+            // nop
+        }
+
+        public override void Execute(out bool exclusive)
+        {
+            if (action.triggered)
             {
                 if (Toggle.isActiveAndEnabled && Toggle.interactable)
                 {
                     Toggle.isOn = !Toggle.isOn;
-                    return true;
+                    exclusive = true;
+                    return;
                 }
             }
-            return false;
-        }
-
-        public override bool OnKeyUp(List<string> keys)
-        {
-            return false;
-        }
-
-        public override bool OnAxis(Dictionary<string, float> axisPositions)
-        {
-            return false;
-        }
-
-        public override bool OnKey(List<string> keys)
-        {
-            return false;
-        }
-
-        public override void OnSelected()
-        {
-            // nop
+            exclusive = false;
         }
     }
 }
