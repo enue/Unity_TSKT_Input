@@ -5,14 +5,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3115efb67212a3abe973a270fb6d7705ebe8016e"
+      "hash": "60bfbae787b1aade3b7a2504999031d96996d7dd"
     },
     "com.github.enue.tskt_container": {
       "version": "https://github.com/enue/Unity_TSKT_Container.git?path=Assets/Package",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "cb478c706a0bd148ab95aca1c113d7caea56fdbf"
+      "hash": "16673d7e5f31049039c420ae2ffa8567bb689528"
     },
     "com.github.enue.tskt_math": {
       "version": "https://github.com/enue/Unity_TSKT_Math.git?path=Assets/Package",
@@ -22,7 +22,7 @@
         "com.github.enue.tskt_container": "0.5.3",
         "com.unity.mathematics": "1.1.0"
       },
-      "hash": "673a84336e0694f5156ff119200ff2e92ad10f4c"
+      "hash": "a4fa661774e4d7a6d17143611ee0bb80574aebf6"
     },
     "com.github.enue.tskt_tween": {
       "version": "https://github.com/enue/Unity_TSKT_Tween.git?path=Assets/Package",
@@ -33,7 +33,7 @@
         "com.github.enue.tskt_container": "0.5.2",
         "com.github.enue.tskt_math": "0.8.3"
       },
-      "hash": "eae8967025de40d9659001ef8f7b0e361e775370"
+      "hash": "0350cf9a84fb9615d0c7bd90bd2daf2f13a0e935"
     },
     "com.unity.collab-proxy": {
       "version": "1.5.7",
