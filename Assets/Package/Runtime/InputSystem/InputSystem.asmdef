@@ -1,0 +1,25 @@
+{
+    "name": "InputSystem",
+    "rootNamespace": "",
+    "references": [
+        "TSKT.Input",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "TSKT_INPUT_SUPPORT_INPUTSYSTEM"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "TSKT_INPUT_SUPPORT_INPUTSYSTEM"
+        }
+    ],
+    "noEngineReferences": false
+}
