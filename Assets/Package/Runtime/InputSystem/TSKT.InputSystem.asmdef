@@ -1,5 +1,5 @@
 {
-    "name": "InputSystem",
+    "name": "TSKT.InputSystem",
     "rootNamespace": "",
     "references": [
         "TSKT.Input",

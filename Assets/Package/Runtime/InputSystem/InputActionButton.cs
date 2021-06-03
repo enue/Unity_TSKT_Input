@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿#nullable enable
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System;
-#nullable enable
 
 namespace TSKT
 {
@@ -11,7 +12,7 @@ namespace TSKT
     public class InputActionButton : InputActionUI
     {
         [SerializeField]
-        UnityEngine.InputSystem.InputActionReference action = default!;
+        InputActionReference action = default!;
 
         [SerializeField]
         bool exclusive = true;

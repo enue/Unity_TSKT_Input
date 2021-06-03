@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-#nullable enable
+﻿#nullable enable
+using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace TSKT
         bool exclusive = true;
 
         [SerializeField]
-        UnityEngine.Events.UnityEvent<UnityEngine.InputSystem.InputAction> onPerformed = default!;
+        UnityEngine.Events.UnityEvent<InputAction> onTriggered = default!;
 
         protected override bool Modal => false;
         protected override void Activate()
@@ -28,7 +29,7 @@ namespace TSKT
         {
             if (action.ToInputAction().triggered)
             {
-                onPerformed.Invoke(action);
+                onTriggered.Invoke(action);
                 exclusive = this.exclusive;
                 return;
             }

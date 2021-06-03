@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿#nullable enable
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-#nullable enable
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
