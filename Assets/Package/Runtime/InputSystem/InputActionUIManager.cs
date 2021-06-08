@@ -66,6 +66,11 @@ namespace TSKT
                 var currentSelectedGameObject = EventSystem.current.currentSelectedGameObject;
                 if (currentSelectedGameObject)
                 {
+                    var i = selectedGameObjects.IndexOf(currentSelectedGameObject);
+                    if (i > 0)
+                    {
+                        selectedGameObjects.RemoveAt(i);
+                    }
                     selectedGameObjects[0] = currentSelectedGameObject;
                 }
             }
