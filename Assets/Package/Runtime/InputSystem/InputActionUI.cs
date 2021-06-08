@@ -27,27 +27,19 @@ namespace TSKT
         }
 
         Canvas? rootCanvas;
-        public Canvas? RootCanvas
+        Canvas RootCanvas
         {
             get
             {
+                if (!transform.IsChildOf(rootCanvas!.transform))
+                {
+                    rootCanvas = null;
+                }
                 if (!rootCanvas)
                 {
                     rootCanvas = GetComponentInParent<Canvas>().rootCanvas;
                 }
-                return rootCanvas;
-            }
-        }
-
-        public void RefreshRootCanvas()
-        {
-            if (!rootCanvas)
-            {
-                return;
-            }
-            if (!transform.IsChildOf(rootCanvas!.transform))
-            {
-                rootCanvas = null;
+                return rootCanvas!;
             }
         }
 
@@ -98,7 +90,7 @@ namespace TSKT
         static UnityEngine.Pool.PooledObject<List<InputActionUI>> BuildSortedItems(out List<InputActionUI> result)
         {
             var pooledObject = UnityEngine.Pool.ListPool<InputActionUI>.Get(out result);
-            using (UnityEngine.Pool.ListPool<(RenderOrder position, InputActionUI keyBind)>.Get(out var keyBindPositions))
+            using (UnityEngine.Pool.ListPool<(RenderOrder position, InputActionUI ui)>.Get(out var uiPositions))
             {
                 RenderOrder? maxInterceptor = default;
 
@@ -113,9 +105,7 @@ namespace TSKT
                         continue;
                     }
 
-                    item.RefreshRootCanvas();
-                    UnityEngine.Assertions.Assert.IsTrue(item.RootCanvas);
-                    var position = new RenderOrder(item.RootCanvas!, item.transform, item.orderInObject);
+                    var position = new RenderOrder(item.RootCanvas, item.transform, item.orderInObject);
 
                     if (maxInterceptor.HasValue)
                     {
@@ -125,7 +115,7 @@ namespace TSKT
                         }
                     }
 
-                    keyBindPositions.Add((position, item));
+                    uiPositions.Add((position, item));
 
                     if (item.Modal)
                     {
@@ -134,12 +124,12 @@ namespace TSKT
                 }
                 // メソッドを直接渡すとGCが発生するのでラムダにする
                 // 降順にしたいので符号を反転させる
-                keyBindPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
+                uiPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
 
-                foreach (var (position, keyBind) in keyBindPositions)
+                foreach (var (position, ui) in uiPositions)
                 {
-                    result.Add(keyBind);
-                    if (keyBind.Modal)
+                    result.Add(ui);
+                    if (ui.Modal)
                     {
                         break;
                     }
