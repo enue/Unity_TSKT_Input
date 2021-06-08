@@ -1829,7 +1829,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 567209926}
-  - component: {fileID: 567209927}
   m_Layer: 5
   m_Name: View
   m_TagString: Untagged
@@ -1858,30 +1857,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &567209927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567209925}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c6d4040499d6244ca280444716305f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderInObject: 0
-  direction: 0
-  initialItem: {fileID: 0}
-  items:
-  - {fileID: 1928544345}
-  - {fileID: 1382195758}
-  scrollRect: {fileID: 0}
-  minPadding: 0
-  maxPadding: 0
-  countPerPage: 0
-  axis: {fileID: -1680190386980627800, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  submit: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
 --- !u!1 &569834341
 GameObject:
   m_ObjectHideFlags: 0
@@ -2579,7 +2554,6 @@ GameObject:
   - component: {fileID: 1021895846}
   - component: {fileID: 1021895848}
   - component: {fileID: 1021895847}
-  - component: {fileID: 1021895849}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -2649,34 +2623,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021895845}
   m_CullTransparentMesh: 0
---- !u!114 &1021895849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021895845}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c6d4040499d6244ca280444716305f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderInObject: 0
-  direction: 2
-  initialItem: {fileID: 0}
-  items:
-  - {fileID: 1354028648}
-  - {fileID: 1397213275}
-  - {fileID: 2058570371}
-  - {fileID: 522130923}
-  - {fileID: 903247362}
-  - {fileID: 448128265}
-  scrollRect: {fileID: 0}
-  minPadding: 0
-  maxPadding: 0
-  countPerPage: 0
-  axis: {fileID: -1680190386980627800, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  submit: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
 --- !u!1 &1102434680
 GameObject:
   m_ObjectHideFlags: 0
@@ -3327,7 +3273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1253045594
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3344,9 +3290,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200.14883, y: -13.1}
-  m_SizeDelta: {x: 33.9, y: 34.57}
-  m_Pivot: {x: 0.88207, y: 0.5}
+  m_AnchoredPosition: {x: -249.05377, y: -13.1}
+  m_SizeDelta: {x: 128, y: 128}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1253045595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3360,14 +3306,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.16470589}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a15ac599e5a7e4a4a99d08f40a599e55, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3392,15 +3338,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253045593}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2691fc20ee91d043a71f33adee1f84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1253045595}
-  mouseMoveAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  hideWhenMouseMoved: 1
 --- !u!1 &1253060815
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,7 +4472,6 @@ GameObject:
   - component: {fileID: 1442867338}
   - component: {fileID: 1442867337}
   - component: {fileID: 1442867336}
-  - component: {fileID: 1442867339}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -4627,35 +4569,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442867334}
   m_CullTransparentMesh: 0
---- !u!114 &1442867339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442867334}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c6d4040499d6244ca280444716305f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orderInObject: 0
-  direction: 0
-  initialItem: {fileID: 0}
-  items:
-  - {fileID: 1747744152}
-  - {fileID: 2015770292}
-  - {fileID: 1266672008}
-  - {fileID: 483267841}
-  - {fileID: 1646886261}
-  - {fileID: 1397414863}
-  - {fileID: 1648093351}
-  scrollRect: {fileID: 1442867336}
-  minPadding: 16
-  maxPadding: 16
-  countPerPage: 3
-  axis: {fileID: -1680190386980627800, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  submit: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
 --- !u!1 &1642241486
 GameObject:
   m_ObjectHideFlags: 0

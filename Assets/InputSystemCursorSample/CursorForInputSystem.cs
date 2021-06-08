@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#nullable enable
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -9,192 +10,31 @@ namespace TSKT
 {
     public class CursorForInputSystem : MonoBehaviour
     {
-        static public CursorForInputSystem Instance { get; private set; }
-
         [SerializeField]
-        Image image = default;
+        Image image = default!;
 
-        [SerializeField]
-        InputActionReference mouseMoveAction = default;
+        RectTransform? rectTransform;
+        RectTransform RectTransform => rectTransform ? rectTransform! : rectTransform = GetComponent<RectTransform>();
 
-        RectTransform focusObject;
-        Canvas focusObjectRootCanvas;
-        RectTransform viewport;
-        Vector3? focusPosition;
-
-        EasingValue x;
-        EasingValue y;
-        Vector3? initialScale;
-
-        public bool IsMouseMode { get; set; }
-        public bool IsSleeping { get; private set; }
-
-        [SerializeField]
-        bool hideWhenMouseMoved = true;
-        public bool HideWhenMouseMoved
-        {
-            get
-            {
-                return hideWhenMouseMoved;
-            }
-        }
-
-        readonly Vector3[] cornersBuffer = new Vector3[4];
-
-        void OnEnable()
-        {
-            Instance = this;
-        }
-
-        void OnDisable()
-        {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
-        }
-
-        void Sleep()
-        {
-            image.enabled = false;
-            focusObject = null;
-            focusObjectRootCanvas = null;
-            focusPosition = null;
-            x = null;
-            y = null;
-        }
-
-        public void SetFocus(RectTransform target, RectTransform viewport)
-        {
-            IsSleeping = false;
-            focusObject = target;
-            focusObjectRootCanvas = null;
-            focusPosition = null;
-            this.viewport = viewport;
-        }
-
-        public void SetFocus(Vector3 worldPosition)
-        {
-            IsSleeping = false;
-            focusObject = null;
-            focusObjectRootCanvas = null;
-            focusPosition = worldPosition;
-            viewport = null;
-        }
+        readonly Vector3[] worldCorners = new Vector3[4];
 
         void Update()
         {
-            // マウスを動かしたらカーソル隠す。隠すだけで動きはする。
-            if (HideWhenMouseMoved)
+            var selected = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+            if (!selected)
             {
-                if (!IsMouseMode)
-                {
-                    if (mouseMoveAction.ToInputAction().triggered)
-                    {
-                        IsMouseMode = true;
-                        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-                    }
-                }
-            }
-
-            if (!focusObject && !focusPosition.HasValue)
-            {
-                Sleep();
-                return;
-            }
-            if (focusObject && !focusObject.gameObject.activeInHierarchy)
-            {
-                Sleep();
+                image.enabled = false;
                 return;
             }
 
-            // フォーカスオブジェクトがある場合は活性化
-            image.enabled = !IsMouseMode;
-            IsSleeping = false;
-
-            Vector3 screenPosition;
-            if (focusObject)
-            {
-                if (!focusObjectRootCanvas)
-                {
-                    focusObjectRootCanvas = focusObject.GetComponentInParent<Canvas>().rootCanvas;
-                }
-                focusObject.GetLocalCorners(cornersBuffer);
-                // オブジェクトから少し離す
-                var margin = 4f;
-                Vector3 worldPos;
-                {
-                    var pos = new Vector3(
-                        cornersBuffer[0].x - margin,
-                        (cornersBuffer[0].y + cornersBuffer[2].y) / 2f,
-                        cornersBuffer[0].z);
-                    worldPos = focusObject.transform.localToWorldMatrix.MultiplyPoint(pos);
-                }
-                if (viewport)
-                {
-                    var localPos = viewport.transform.worldToLocalMatrix.MultiplyPoint(worldPos);
-
-                    viewport.GetLocalCorners(cornersBuffer);
-                    var xMin = cornersBuffer[0].x - margin;
-                    var yMin = cornersBuffer[0].y;
-                    var xMax = cornersBuffer[2].x;
-                    var yMax = cornersBuffer[2].y;
-
-                    localPos.x = Mathf.Clamp(localPos.x, xMin, xMax);
-                    localPos.y = Mathf.Clamp(localPos.y, yMin, yMax);
-
-                    worldPos = viewport.transform.localToWorldMatrix.MultiplyPoint(localPos);
-                }
-
-                if (focusObjectRootCanvas.worldCamera)
-                {
-                    screenPosition = focusObjectRootCanvas.worldCamera.WorldToScreenPoint(worldPos);
-                }
-                else
-                {
-                    screenPosition = worldPos;
-                }
-            }
-            else
-            {
-                screenPosition = focusPosition.Value;
-            }
-
-            if (x == null)
-            {
-                x = new EasingValue
-                {
-                    timeType = EasingValueBase.TimeType.RealTime,
-                    EasingFunction = TSKT.EasingFunction.Quad.EaseOut
-                };
-                x.JumpTo(screenPosition.x);
-            }
-            else
-            {
-                if (x.ToValue != screenPosition.x)
-                {
-                    x.EaseTo(screenPosition.x, 0.1f);
-                }
-            }
-
-            if (y == null)
-            {
-                y = new EasingValue
-                {
-                    timeType = EasingValueBase.TimeType.RealTime,
-                    EasingFunction = TSKT.EasingFunction.Quad.EaseOut
-                };
-                y.JumpTo(screenPosition.y);
-            }
-            else
-            {
-                if (y.ToValue != screenPosition.y)
-                {
-                    y.EaseTo(screenPosition.y, 0.1f);
-                }
-            }
-
-            transform.position = new Vector3(x.Value, y.Value, transform.position.z);
+            image.enabled = true;
+            var selectedRectTransform = selected.GetComponent<RectTransform>();
+            selectedRectTransform.GetWorldCorners(worldCorners);
+            var size = worldCorners[2] - worldCorners[0];
+            var worldPosition = Vector3.Lerp(worldCorners[2], worldCorners[0], 0.5f);
+            RectTransform.position = worldPosition;
+            var scale =  RectTransform.lossyScale;
+            RectTransform.sizeDelta = new Vector2(size.x / scale.x, size.y / scale.y);
         }
     }
 }
