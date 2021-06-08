@@ -3,19 +3,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using System;
 
 namespace TSKT
 {
-    public class InputActionModal : InputActionUI
+    [RequireComponent(typeof(Selectable))]
+    public class InputActionSelectable : InputActionUI
     {
-        public override bool Modal => true;
-        public override bool Selectable => false;
+        public override bool Modal => false;
+        public override bool Selectable => true;
 
         public override void Invoke(out bool exclusive)
         {
-            exclusive = true;
+            exclusive = false;
         }
 
         public override void Activate()
