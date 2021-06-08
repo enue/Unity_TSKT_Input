@@ -21,6 +21,7 @@ namespace TSKT
         Button Button => button ? button! : (button = GetComponent<Button>());
 
         protected override bool Modal => false;
+        protected override bool Navigated => true;
 
         protected override void Activate()
         {

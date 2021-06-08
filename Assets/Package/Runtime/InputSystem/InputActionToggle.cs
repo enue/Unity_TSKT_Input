@@ -21,6 +21,7 @@ namespace TSKT
         Toggle Toggle => toggle ? toggle! : (toggle = GetComponent<Toggle>());
 
         protected override bool Modal => false;
+        protected override bool Navigated => true;
         protected override void Activate()
         {
             // nop

@@ -20,6 +20,7 @@ namespace TSKT
         UnityEngine.Events.UnityEvent<InputAction> onTriggered = default!;
 
         protected override bool Modal => false;
+        protected override bool Navigated => true;
         protected override void Activate()
         {
             action.ToInputAction().Enable();

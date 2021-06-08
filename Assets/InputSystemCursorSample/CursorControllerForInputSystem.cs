@@ -225,6 +225,7 @@ namespace TSKT
         }
 
         protected override bool Modal => false;
+        protected override bool Navigated => false;
 
         protected override void Activate()
         {

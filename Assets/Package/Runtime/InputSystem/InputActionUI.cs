@@ -60,9 +60,9 @@ namespace TSKT
         }
 
         protected abstract bool Modal { get; }
+        protected abstract bool Navigated { get; }
         protected abstract void Activate();
         protected abstract void Invoke(out bool exclusive);
-
         static int lastUpdatedFrame;
 
         void Update()
@@ -79,7 +79,14 @@ namespace TSKT
                 {
                     Modified = false;
 
+                    foreach (var it in Selectable.allSelectablesArray)
                     {
+                        var navigation = it!.navigation;
+                        navigation.mode = Navigation.Mode.None;
+                        it.navigation = navigation;
+                    }
+                    {
+                        GameObject? selectdGameObject = null;
                         var underModal = false;
                         foreach (var it in sortedItems)
                         {
@@ -87,18 +94,19 @@ namespace TSKT
                             if (selectable)
                             {
                                 var navigation = selectable!.navigation;
-                                if (underModal)
-                                {
-                                    navigation.mode = Navigation.Mode.None;
-                                }
-                                else
+                                if (it.Navigated && !underModal)
                                 {
                                     navigation.mode = Navigation.Mode.Automatic;
+                                    if (!selectdGameObject)
+                                    {
+                                        selectdGameObject = it.gameObject;
+                                    }
                                 }
                                 selectable.navigation = navigation;
                             }
                             underModal |= it.Modal;
                         }
+                        UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(selectdGameObject);
                     }
                     foreach (var it in sortedItems)
                     {

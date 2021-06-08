@@ -8,14 +8,14 @@ using System;
 
 namespace TSKT
 {
-    public class InputActionModal : InputActionUI
+    public class InputActionSelectable : InputActionUI
     {
-        protected override bool Modal => true;
-        protected override bool Navigated => false;
+        protected override bool Modal => false;
+        protected override bool Navigated => true;
 
         protected override void Invoke(out bool exclusive)
         {
-            exclusive = true;
+            exclusive = false;
         }
 
         protected override void Activate()
