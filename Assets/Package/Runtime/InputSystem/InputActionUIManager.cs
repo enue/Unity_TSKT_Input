@@ -54,13 +54,15 @@ namespace TSKT
                         it.Activate();
                     }
                 }
-
-                foreach (var item in sortedItems)
+                else
                 {
-                    item.Invoke(out var exclusive);
-                    if (exclusive)
+                    foreach (var item in sortedItems)
                     {
-                        break;
+                        item.Invoke(out var exclusive);
+                        if (exclusive)
+                        {
+                            break;
+                        }
                     }
                 }
             }
