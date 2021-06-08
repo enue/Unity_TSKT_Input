@@ -31,15 +31,31 @@ namespace TSKT
         {
             get
             {
-                if (!transform.IsChildOf(rootCanvas!.transform))
+                if (rootCanvas)
                 {
-                    rootCanvas = null;
+                    if (!transform.IsChildOf(rootCanvas!.transform))
+                    {
+                        rootCanvas = null;
+                    }
                 }
                 if (!rootCanvas)
                 {
                     rootCanvas = GetComponentInParent<Canvas>().rootCanvas;
                 }
                 return rootCanvas!;
+            }
+        }
+
+        Selectable? selectable;
+        Selectable? Selectable
+        {
+            get
+            {
+                if (!selectable)
+                {
+                    TryGetComponent(out selectable);
+                }
+                return selectable;
             }
         }
 
@@ -62,6 +78,28 @@ namespace TSKT
                 if (Modified)
                 {
                     Modified = false;
+
+                    {
+                        var underModal = false;
+                        foreach (var it in sortedItems)
+                        {
+                            var selectable = it.Selectable;
+                            if (selectable)
+                            {
+                                var navigation = selectable!.navigation;
+                                if (underModal)
+                                {
+                                    navigation.mode = Navigation.Mode.None;
+                                }
+                                else
+                                {
+                                    navigation.mode = Navigation.Mode.Automatic;
+                                }
+                                selectable.navigation = navigation;
+                            }
+                            underModal |= it.Modal;
+                        }
+                    }
                     foreach (var it in sortedItems)
                     {
                         it.Activate();
@@ -129,10 +167,6 @@ namespace TSKT
                 foreach (var (position, ui) in uiPositions)
                 {
                     result.Add(ui);
-                    if (ui.Modal)
-                    {
-                        break;
-                    }
                 }
             }
             return pooledObject;
