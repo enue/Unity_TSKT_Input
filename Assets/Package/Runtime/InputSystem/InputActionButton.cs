@@ -16,14 +16,11 @@ namespace TSKT
         [SerializeField]
         bool exclusive = true;
 
-        [SerializeField]
-        bool selectable = true;
-        public override bool Selectable => selectable;
-
         Button? button;
         Button Button => button ? button! : (button = GetComponent<Button>());
 
         public override bool Modal => false;
+        public override bool Selectable => false;
 
         public override void Activate()
         {
