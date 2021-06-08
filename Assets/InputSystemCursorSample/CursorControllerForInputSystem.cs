@@ -224,10 +224,10 @@ namespace TSKT
             onSelectCallbacks[item] = onSelected;
         }
 
-        protected override bool Modal => false;
-        protected override bool Navigated => false;
+        public override bool Modal => false;
+        public override bool Selectable => false;
 
-        protected override void Activate()
+        public override void Activate()
         {
             if (UnityEngine.EventSystems.EventSystem.current)
             {
@@ -257,7 +257,7 @@ namespace TSKT
             RefreshCursor();
         }
 
-        protected override void Invoke(out bool exclusive)
+        public override void Invoke(out bool exclusive)
         {
             if (submit.ToInputAction().triggered)
             {

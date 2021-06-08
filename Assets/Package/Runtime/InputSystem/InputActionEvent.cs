@@ -11,7 +11,7 @@ namespace TSKT
     public class InputActionEvent : InputActionUI
     {
         [SerializeField]
-        UnityEngine.InputSystem.InputActionReference action = default!;
+        InputActionReference action = default!;
 
         [SerializeField]
         bool exclusive = true;
@@ -19,14 +19,14 @@ namespace TSKT
         [SerializeField]
         UnityEngine.Events.UnityEvent<InputAction> onTriggered = default!;
 
-        protected override bool Modal => false;
-        protected override bool Navigated => true;
-        protected override void Activate()
+        public override bool Modal => false;
+        public override bool Selectable => true;
+        public override void Activate()
         {
             action.ToInputAction().Enable();
         }
 
-        protected override void Invoke(out bool exclusive)
+        public override void Invoke(out bool exclusive)
         {
             if (action.ToInputAction().triggered)
             {

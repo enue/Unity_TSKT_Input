@@ -10,15 +10,15 @@ namespace TSKT
 {
     public class InputActionModal : InputActionUI
     {
-        protected override bool Modal => true;
-        protected override bool Navigated => false;
+        public override bool Modal => true;
+        public override bool Selectable => false;
 
-        protected override void Invoke(out bool exclusive)
+        public override void Invoke(out bool exclusive)
         {
             exclusive = true;
         }
 
-        protected override void Activate()
+        public override void Activate()
         {
             // nop
         }

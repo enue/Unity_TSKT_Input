@@ -17,17 +17,21 @@ namespace TSKT
         [SerializeField]
         bool exclusive = true;
 
+        [SerializeField]
+        bool selectable = true;
+        public override bool Selectable => selectable;
+
         Toggle? toggle;
         Toggle Toggle => toggle ? toggle! : (toggle = GetComponent<Toggle>());
 
-        protected override bool Modal => false;
-        protected override bool Navigated => true;
-        protected override void Activate()
+        public override bool Modal => false;
+
+        public override void Activate()
         {
             // nop
         }
 
-        protected override void Invoke(out bool exclusive)
+        public override void Invoke(out bool exclusive)
         {
             if (action.triggered)
             {

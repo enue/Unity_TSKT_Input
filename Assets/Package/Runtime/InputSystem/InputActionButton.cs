@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System;
 
 namespace TSKT
 {
@@ -17,18 +16,21 @@ namespace TSKT
         [SerializeField]
         bool exclusive = true;
 
+        [SerializeField]
+        bool selectable = true;
+        public override bool Selectable => selectable;
+
         Button? button;
         Button Button => button ? button! : (button = GetComponent<Button>());
 
-        protected override bool Modal => false;
-        protected override bool Navigated => true;
+        public override bool Modal => false;
 
-        protected override void Activate()
+        public override void Activate()
         {
             action.ToInputAction().Enable();
         }
 
-        protected override void Invoke(out bool exclusive)
+        public override void Invoke(out bool exclusive)
         {
             if (action.ToInputAction().triggered)
             {
