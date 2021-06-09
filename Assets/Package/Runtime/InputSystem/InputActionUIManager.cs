@@ -26,37 +26,12 @@ namespace TSKT
             int? latestLog = null;
             foreach (var it in sortedItems)
             {
-                if (it.Selectable)
+                if (it.NavigationMode != Navigation.Mode.None)
                 {
                     if (it.TryGetComponent<Selectable>(out var selectable))
                     {
                         var navigation = selectable.navigation;
-                        if (selectable is Slider slider)
-                        {
-                            navigation.mode = slider.direction switch
-                            {
-                                Slider.Direction.BottomToTop => Navigation.Mode.Horizontal,
-                                Slider.Direction.TopToBottom => Navigation.Mode.Horizontal,
-                                Slider.Direction.LeftToRight => Navigation.Mode.Vertical,
-                                Slider.Direction.RightToLeft => Navigation.Mode.Vertical,
-                                _ => throw new System.NotImplementedException(),
-                            };
-                        }
-                        else if (selectable is Scrollbar scrollBar)
-                        {
-                            navigation.mode = scrollBar.direction switch
-                            {
-                                Scrollbar.Direction.BottomToTop => Navigation.Mode.Horizontal,
-                                Scrollbar.Direction.TopToBottom => Navigation.Mode.Horizontal,
-                                Scrollbar.Direction.LeftToRight => Navigation.Mode.Vertical,
-                                Scrollbar.Direction.RightToLeft => Navigation.Mode.Vertical,
-                                _ => throw new System.NotImplementedException(),
-                            };
-                        }
-                        else
-                        {
-                            navigation.mode = Navigation.Mode.Automatic;
-                        }
+                        navigation.mode = it.NavigationMode;
                         selectable.navigation = navigation;
 
                         topSelectabeGameObject = it.gameObject;
