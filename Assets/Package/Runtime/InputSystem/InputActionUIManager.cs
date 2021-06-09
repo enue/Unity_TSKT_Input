@@ -36,7 +36,7 @@ namespace TSKT
                         selectable.navigation = navigation;
 
                         var index = selectedGameObjects.IndexOf(it.gameObject);
-                        if (index > 0)
+                        if (index >= 0)
                         {
                             if (!latestLog.HasValue || latestLog.Value > index)
                             {
