@@ -1488,7 +1488,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &453196495
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,7 +1726,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &522130923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,7 +1833,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &567209925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2257,7 +2275,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -3581,7 +3605,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1292312044
 GameObject:
   m_ObjectHideFlags: 0
@@ -3888,7 +3918,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 2
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1382195758
 GameObject:
   m_ObjectHideFlags: 0
@@ -4057,7 +4093,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1397213275
 GameObject:
   m_ObjectHideFlags: 0
@@ -4162,7 +4204,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 2
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1397414863
 GameObject:
   m_ObjectHideFlags: 0
@@ -4319,7 +4367,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1404173305
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,7 +4865,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1648093351
 GameObject:
   m_ObjectHideFlags: 0
@@ -4968,7 +5028,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1666997851
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,7 +5306,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1819130517
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,7 +5639,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &1953256014
 GameObject:
   m_ObjectHideFlags: 0
@@ -5997,7 +6075,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 2
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &2053047416
 GameObject:
   m_ObjectHideFlags: 0
@@ -6182,7 +6266,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderInObject: 0
-  navigationMode: 3
+  navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
 --- !u!1 &2115951955
 GameObject:
   m_ObjectHideFlags: 0

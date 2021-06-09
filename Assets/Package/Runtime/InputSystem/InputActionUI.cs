@@ -47,7 +47,7 @@ namespace TSKT
         }
 
         public abstract bool Modal { get; }
-        public abstract Navigation.Mode NavigationMode { get; }
+        public abstract Navigation Navigation { get; }
         public abstract void Activate();
         public abstract void Invoke(out bool exclusive);
 

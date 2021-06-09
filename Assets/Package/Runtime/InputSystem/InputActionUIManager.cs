@@ -26,13 +26,11 @@ namespace TSKT
             int? latestLog = null;
             foreach (var it in sortedItems)
             {
-                if (it.NavigationMode != Navigation.Mode.None)
+                if (it.Navigation.mode != Navigation.Mode.None)
                 {
                     if (it.TryGetComponent<Selectable>(out var selectable))
                     {
-                        var navigation = selectable.navigation;
-                        navigation.mode = it.NavigationMode;
-                        selectable.navigation = navigation;
+                        selectable.navigation = it.Navigation;
 
                         topSelectabeGameObject = it.gameObject;
                         if (!latestLog.HasValue || latestLog.Value > 0)

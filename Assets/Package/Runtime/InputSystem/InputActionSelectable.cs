@@ -10,9 +10,15 @@ namespace TSKT
     public class InputActionSelectable : InputActionUI
     {
         public override bool Modal => false;
+
         [SerializeField]
-        Navigation.Mode navigationMode = Navigation.Mode.Automatic;
-        public override Navigation.Mode NavigationMode => navigationMode;
+        Navigation navigation = new Navigation() { mode = Navigation.Mode.Automatic };
+        public override Navigation Navigation => navigation;
+
+        public void SetNavigation(Navigation value)
+        {
+            navigation = value;
+        }
 
         public override void Invoke(out bool exclusive)
         {
