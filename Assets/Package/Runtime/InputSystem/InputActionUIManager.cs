@@ -31,10 +31,35 @@ namespace TSKT
                     if (it.TryGetComponent<Selectable>(out var selectable))
                     {
                         var navigation = selectable.navigation;
-                        navigation.mode = Navigation.Mode.Automatic;
-                        topSelectabeGameObject = it.gameObject;
+                        if (selectable is Slider slider)
+                        {
+                            navigation.mode = slider.direction switch
+                            {
+                                Slider.Direction.BottomToTop => Navigation.Mode.Horizontal,
+                                Slider.Direction.TopToBottom => Navigation.Mode.Horizontal,
+                                Slider.Direction.LeftToRight => Navigation.Mode.Vertical,
+                                Slider.Direction.RightToLeft => Navigation.Mode.Vertical,
+                                _ => throw new System.NotImplementedException(),
+                            };
+                        }
+                        else if (selectable is Scrollbar scrollBar)
+                        {
+                            navigation.mode = scrollBar.direction switch
+                            {
+                                Scrollbar.Direction.BottomToTop => Navigation.Mode.Horizontal,
+                                Scrollbar.Direction.TopToBottom => Navigation.Mode.Horizontal,
+                                Scrollbar.Direction.LeftToRight => Navigation.Mode.Vertical,
+                                Scrollbar.Direction.RightToLeft => Navigation.Mode.Vertical,
+                                _ => throw new System.NotImplementedException(),
+                            };
+                        }
+                        else
+                        {
+                            navigation.mode = Navigation.Mode.Automatic;
+                        }
                         selectable.navigation = navigation;
 
+                        topSelectabeGameObject = it.gameObject;
                         if (!latestLog.HasValue || latestLog.Value > 0)
                         {
                             var index = selectedGameObjects.IndexOf(it.gameObject);
