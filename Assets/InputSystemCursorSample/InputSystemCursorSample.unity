@@ -653,7 +653,6 @@ MonoBehaviour:
   orderInObject: 0
   action: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   exclusive: 1
-  selectable: 1
 --- !u!1 &199687465
 GameObject:
   m_ObjectHideFlags: 0
@@ -3343,6 +3342,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2691fc20ee91d043a71f33adee1f84b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  point: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  navigate: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
   image: {fileID: 1253045595}
 --- !u!1 &1253060815
 GameObject:
@@ -5813,7 +5815,6 @@ MonoBehaviour:
   orderInObject: 0
   action: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   exclusive: 1
-  selectable: 0
 --- !u!114 &1996375289
 MonoBehaviour:
   m_ObjectHideFlags: 0
