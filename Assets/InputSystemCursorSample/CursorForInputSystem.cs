@@ -22,8 +22,6 @@ namespace TSKT
         RectTransform? rectTransform;
         RectTransform RectTransform => rectTransform ? rectTransform! : rectTransform = GetComponent<RectTransform>();
 
-        readonly Vector3[] worldCorners = new Vector3[4];
-
         bool usingKeyboard = true;
 
         void Start()
@@ -53,68 +51,23 @@ namespace TSKT
 
             image.enabled = usingKeyboard;
             var selectedRectTransform = selected.GetComponent<RectTransform>();
-            var rect = GetWorldRect(selectedRectTransform);
+            var rect = selectedRectTransform.GetWorldRect();
             RectTransform.position = rect.center;
-            var scale =  RectTransform.lossyScale;
+            var scale = RectTransform.lossyScale;
             RectTransform.sizeDelta = new Vector2(rect.width / scale.x, rect.height / scale.y);
 
             if (image.enabled)
             {
-                AdjustScrollPosition(selected, rect);
+                var scrollRect = selected.GetComponentInParent<ScrollRect>();
+                if (scrollRect
+                    && scrollRect.viewport
+                    && selected.transform.IsChildOf(scrollRect.content))
+                {
+                    scrollRect.AdjustScrollPositionToCointainInViewport(selectedRectTransform, new Vector2(0f, 50f));
+                    return;
+                }
             }
         }
 
-        void AdjustScrollPosition(GameObject obj, Rect rect)
-        {
-            var scrollRect = obj.GetComponentInParent<ScrollRect>();
-            if (!scrollRect)
-            {
-                return;
-            }
-            if (!scrollRect.viewport)
-            {
-                return;
-            }
-            if (!obj.transform.IsChildOf(scrollRect.content))
-            {
-                return;
-            }
-            var contentRect = GetWorldRect(scrollRect.content);
-            var viewportRect = GetWorldRect(scrollRect.viewport);
-            if (scrollRect.vertical)
-            {
-                float move = 0f;
-                if (rect.yMin < viewportRect.yMin)
-                {
-                    move = rect.yMin - viewportRect.yMin;
-                }
-                else if (rect.yMax > viewportRect.yMax)
-                {
-                    move = rect.yMax - viewportRect.yMax;
-                }
-                scrollRect.verticalNormalizedPosition += move / contentRect.height;
-            }
-            if (scrollRect.horizontal)
-            {
-                float move = 0f;
-                if (rect.xMin < viewportRect.xMin)
-                {
-                    move = rect.xMin - viewportRect.xMin;
-                }
-                else if (rect.xMax > viewportRect.xMax)
-                {
-                    move = rect.xMax - viewportRect.xMax;
-                }
-                scrollRect.horizontalNormalizedPosition += move / contentRect.width;
-            }
-        }
-
-        public Rect GetWorldRect(RectTransform rect)
-        {
-            rect.GetWorldCorners(worldCorners);
-            return Rect.MinMaxRect(
-                worldCorners[0].x, worldCorners[0].y,
-                worldCorners[2].x, worldCorners[2].y);
-        }
     }
 }

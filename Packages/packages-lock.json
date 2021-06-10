@@ -35,6 +35,18 @@
       },
       "hash": "0350cf9a84fb9615d0c7bd90bd2daf2f13a0e935"
     },
+    "com.github.enue.tskt_ui": {
+      "version": "https://github.com/enue/Unity_TSKT_UI.git?path=Assets/Package",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.0.13",
+        "com.github.enue.tskt_container": "0.5.2",
+        "com.github.enue.tskt_math": "0.8.3",
+        "com.github.enue.tskt_tween": "0.5.0"
+      },
+      "hash": "7997e3a0d041632adf2a52349d8d200b31f06fd0"
+    },
     "com.unity.collab-proxy": {
       "version": "1.5.7",
       "depth": 0,
