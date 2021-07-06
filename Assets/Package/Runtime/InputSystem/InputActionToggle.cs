@@ -12,7 +12,7 @@ namespace TSKT
     public class InputActionToggle : InputActionUI
     {
         [SerializeField]
-        InputAction action = default!;
+        InputActionReference action = default!;
 
         [SerializeField]
         bool exclusive = true;
@@ -25,12 +25,12 @@ namespace TSKT
 
         public override void Activate()
         {
-            // nop
+            action.action.Enable();
         }
 
         public override void Invoke(out bool exclusive)
         {
-            if (action.triggered)
+            if (action.action.triggered)
             {
                 if (Toggle.isActiveAndEnabled && Toggle.interactable)
                 {
