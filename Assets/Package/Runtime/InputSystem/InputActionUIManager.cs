@@ -72,7 +72,7 @@ namespace TSKT
                     {
                         selectedGameObjects.RemoveAt(i);
                     }
-                    selectedGameObjects[0] = currentSelectedGameObject;
+                    selectedGameObjects.Insert(0, currentSelectedGameObject);
                 }
             }
 
