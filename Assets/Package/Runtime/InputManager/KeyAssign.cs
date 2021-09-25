@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace TSKT
 {
+    [System.Obsolete]
     [CreateAssetMenu(fileName = "KeyAssign", menuName = "TSKT/Key assign", order = 1023)]
     public class KeyAssign : ScriptableObject
     {

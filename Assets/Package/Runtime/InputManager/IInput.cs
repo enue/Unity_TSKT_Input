@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public interface IInput
     {
         bool GetKeyDown(KeyAssign.AppKey appKey);

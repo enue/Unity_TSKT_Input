@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public abstract class KeyBind : MonoBehaviour
     {
         struct KeyBindBuffer

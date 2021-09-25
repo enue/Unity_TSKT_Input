@@ -7,6 +7,7 @@ using System;
 
 namespace TSKT
 {
+    [System.Obsolete]
     [RequireComponent(typeof(Toggle))]
     public class KeyCodeToggle : KeyBind
     {

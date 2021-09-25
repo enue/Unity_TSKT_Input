@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public class InputSetting : ScriptableObject
     {
         static InputSetting? instance;

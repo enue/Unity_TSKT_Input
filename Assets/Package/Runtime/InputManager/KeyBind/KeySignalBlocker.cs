@@ -8,6 +8,7 @@ using System;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public class KeySignalBlocker : KeyBind
     {
         public override bool BlockingSignals => true;

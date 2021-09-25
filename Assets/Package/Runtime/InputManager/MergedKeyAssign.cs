@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public readonly struct MergedKeyAssign
     {
         public readonly KeyAssign.AppKey[] keys;

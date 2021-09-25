@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public class KeyObserver : MonoBehaviour
     {
         public static KeyObserver? Instance { get; private set; }

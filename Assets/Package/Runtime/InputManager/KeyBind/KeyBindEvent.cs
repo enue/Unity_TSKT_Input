@@ -7,6 +7,7 @@ using System;
 
 namespace TSKT
 {
+    [System.Obsolete]
     public class KeyBindEvent : KeyBind
     {
         [System.Serializable]
