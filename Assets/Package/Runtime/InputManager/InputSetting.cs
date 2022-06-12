@@ -24,16 +24,5 @@ namespace TSKT
         [SerializeField]
         string cancel = "Cancel";
         public string Cancel => cancel;
-
-
-#if UNITY_EDITOR
-        [UnityEditor.MenuItem("TSKT/Create Input Setting")]
-        static void CreateScriptableObject()
-        {
-            var obj = CreateInstance<InputSetting>();
-            UnityEditor.AssetDatabase.CreateAsset(obj, "Assets/Resources/InputSetting.asset");
-            UnityEditor.EditorUtility.SetDirty(obj);
-        }
-#endif
     }
 }
