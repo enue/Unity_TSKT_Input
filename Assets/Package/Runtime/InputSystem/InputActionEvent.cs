@@ -18,6 +18,7 @@ namespace TSKT
 
         [SerializeField]
         UnityEngine.Events.UnityEvent<InputAction> onTriggered = default!;
+        public UnityEngine.Events.UnityEvent<InputAction> OnTriggered => onTriggered;
 
         public override bool Modal => false;
         public override Navigation Navigation => new Navigation() { mode = Navigation.Mode.None };
