@@ -12,7 +12,7 @@ namespace TSKT
         [SerializeField]
         bool controlNavigation = false;
 
-        readonly List<GameObject?> selectedGameObjects = new List<GameObject?>();
+        readonly List<GameObject?> selectedGameObjects = new();
 
         void BuildNavigation(List<InputActionUI> sortedItems)
         {

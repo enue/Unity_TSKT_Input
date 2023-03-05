@@ -105,7 +105,7 @@ namespace TSKT
                     result.Add(it);
                 }
             }
-            return result.Array;
+            return result.writer.WrittenSpan.ToArray();
         }
 
         public static T[] Concat<T>(T[] a, T[] b)
@@ -128,7 +128,7 @@ namespace TSKT
             {
                 builder.Add(it);
             }
-            return builder.Array;
+            return builder.writer.WrittenSpan.ToArray();
         }
     }
 }
