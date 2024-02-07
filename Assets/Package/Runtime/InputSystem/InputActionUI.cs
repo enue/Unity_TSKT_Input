@@ -86,9 +86,8 @@ namespace TSKT
                         maxInterceptor = position;
                     }
                 }
-                // メソッドを直接渡すとGCが発生するのでラムダにする
                 // 降順にしたいので符号を反転させる
-                uiPositions.Sort((x, y) => -RenderOrder.Compare(x.position, y.position));
+                uiPositions.Sort(static (x, y) => -RenderOrder.Compare(x.position, y.position));
 
                 foreach (var (position, ui) in uiPositions)
                 {
