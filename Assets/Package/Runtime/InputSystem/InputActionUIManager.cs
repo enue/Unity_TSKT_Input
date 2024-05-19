@@ -84,9 +84,9 @@ namespace TSKT
 
             using (InputActionUI.BuildSortedItemsToActivate(out var sortedItems))
             {
-                if (InputActionUI.Modified)
+                if (InputActionUI.ShouldBuildNavigation)
                 {
-                    InputActionUI.Modified = false;
+                    InputActionUI.ShouldBuildNavigation = false;
 
                     if (controlNavigation)
                     {

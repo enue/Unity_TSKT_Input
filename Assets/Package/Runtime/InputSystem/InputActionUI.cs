@@ -9,7 +9,7 @@ namespace TSKT
     public abstract class InputActionUI : MonoBehaviour
     {
         static readonly HashSet<InputActionUI> instances = new HashSet<InputActionUI>();
-        public static bool Modified { get; set; }
+        public static bool ShouldBuildNavigation { get; set; }
 
         [SerializeField]
         int orderInObject = 0;
@@ -17,13 +17,13 @@ namespace TSKT
         void OnEnable()
         {
             instances.Add(this);
-            Modified = true;
+            ShouldBuildNavigation = true;
         }
 
         void OnDisable()
         {
             instances.Remove(this);
-            Modified = true;
+            ShouldBuildNavigation = true;
         }
 
         Canvas? rootCanvas;
