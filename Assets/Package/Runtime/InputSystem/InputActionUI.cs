@@ -46,6 +46,22 @@ namespace TSKT
             }
         }
 
+        Selectable? selectable;
+        public Selectable? Selectable
+        {
+            get
+            {
+                if (!selectable)
+                {
+                    if (!TryGetComponent<Selectable>(out selectable))
+                    {
+                        return null;
+                    }
+                }
+                return selectable;
+            }
+        }
+
         public abstract bool Modal { get; }
         public abstract Navigation Navigation { get; }
         public abstract void Activate();

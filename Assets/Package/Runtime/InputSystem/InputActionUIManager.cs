@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 namespace TSKT
 {
@@ -16,19 +17,24 @@ namespace TSKT
 
         void BuildNavigation(List<InputActionUI> sortedItems)
         {
-            foreach (var it in Selectable.allSelectablesArray)
+            var selectables = System.Buffers.ArrayPool<Selectable>.Shared.Rent(Selectable.allSelectableCount);
+            Selectable.AllSelectablesNoAlloc(selectables);
+            foreach (var it in selectables.AsSpan(0, Selectable.allSelectableCount))
             {
                 var navigation = it!.navigation;
                 navigation.mode = Navigation.Mode.None;
                 it.navigation = navigation;
             }
+            System.Buffers.ArrayPool<Selectable>.Shared.Return(selectables);
+
             GameObject? topSelectabeGameObject = null;
             int? latestLog = null;
             foreach (var it in sortedItems)
             {
                 if (it.Navigation.mode != Navigation.Mode.None)
                 {
-                    if (it.TryGetComponent<Selectable>(out var selectable))
+                    var selectable = it.Selectable;
+                    if (selectable && selectable!.enabled)
                     {
                         selectable.navigation = it.Navigation;
 
