@@ -37,7 +37,6 @@ namespace TSKT
                     if (selectable && selectable!.enabled)
                     {
                         selectable.navigation = it.Navigation;
-
                         topSelectabeGameObject = it.gameObject;
                         if (!latestLog.HasValue || latestLog.Value > 0)
                         {
@@ -79,6 +78,14 @@ namespace TSKT
                         selectedGameObjects.RemoveAt(i);
                     }
                     selectedGameObjects.Insert(0, currentSelectedGameObject);
+
+                    if (currentSelectedGameObject.TryGetComponent<Selectable>(out var selectable))
+                    {
+                        if (!selectable.enabled)
+                        {
+                            InputActionUI.ShouldBuildNavigation = true;
+                        }
+                    }
                 }
             }
 
