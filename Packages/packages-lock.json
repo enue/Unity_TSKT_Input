@@ -7,21 +7,21 @@
       "dependencies": {
         "com.unity.modules.imgui": "1.0.0"
       },
-      "hash": "2ef1bbf84f07e34b2f5750227a89150ef97c2d3d"
+      "hash": "b245f9f108adff918e8f735a2ff754bb2c619dd0"
     },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "809d23edae0df58fd0f61b4b6f67855c59d1b2fb"
+      "hash": "fbe0bf85155f42f8832205f7b3ac3df571ada33e"
     },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7388d28922b2144497f639630fd8b8b7a3c1ee6d"
+      "hash": "12574c32f658fa23c194357141abc3fc157ea362"
     },
     "com.github.enue.tskt_math": {
       "version": "https://github.com/enue/Unity_TSKT_Math.git?path=Assets/Package",
@@ -37,22 +37,22 @@
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.cysharp.unitask": "2.3.3",
-        "com.github.enue.tskt_math": "0.21.5"
+        "com.github.enue.tskt_math": "0.21.5",
+        "com.cysharp.unitask": "2.5.3"
       },
-      "hash": "fdf0d74abdc8b086af02658c671fd3ec382c43b0"
+      "hash": "a54af2c92c535c9e64a1d573616a4addea39d2ec"
     },
     "com.github.enue.tskt_ui": {
-      "version": "https://github.com/enue/Unity_TSKT_UI.git?path=Assets/Package#r3",
+      "version": "https://github.com/enue/Unity_TSKT_UI.git?path=Assets/Package",
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.cysharp.r3": "0.1.2"
+        "com.cysharp.r3": "1.1.11"
       },
-      "hash": "b91923d8bd3357af1384e2f0c1766ba4497b7da6"
+      "hash": "394bce88dbcc641831dbe0df7d13e6aff20c39ef"
     },
     "com.unity.burst": {
-      "version": "1.8.12",
+      "version": "1.8.15",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -78,7 +78,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.7.0",
+      "version": "1.8.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -87,14 +87,14 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.mathematics": {
-      "version": "1.2.6",
+      "version": "1.3.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.3.9",
+      "version": "1.4.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
