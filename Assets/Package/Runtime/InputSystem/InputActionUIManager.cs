@@ -15,17 +15,25 @@ namespace TSKT
 
         readonly List<GameObject?> selectedGameObjects = new();
 
+        Selectable?[]? pool;
+
         void BuildNavigation(List<InputActionUI> sortedItems)
         {
-            var selectables = System.Buffers.ArrayPool<Selectable>.Shared.Rent(Selectable.allSelectableCount);
-            Selectable.AllSelectablesNoAlloc(selectables);
-            foreach (var it in selectables.AsSpan(0, Selectable.allSelectableCount))
+            if (pool == null || pool.Length < Selectable.allSelectableCount)
+            {
+                pool = new Selectable[Selectable.allSelectableCount];
+            }
+            Selectable.AllSelectablesNoAlloc(pool);
+            foreach (var it in pool.AsSpan(0, Selectable.allSelectableCount))
             {
                 var navigation = it!.navigation;
                 navigation.mode = Navigation.Mode.None;
                 it.navigation = navigation;
             }
-            System.Buffers.ArrayPool<Selectable>.Shared.Return(selectables);
+            for (int i = 0; i < pool.Length; i++)
+            {
+                pool[i] = null;
+            }
 
             GameObject? topSelectabeGameObject = null;
             int? latestLog = null;
