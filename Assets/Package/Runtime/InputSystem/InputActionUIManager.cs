@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Buffers;
 
 namespace TSKT
 {
@@ -14,10 +15,11 @@ namespace TSKT
         bool controlNavigation = false;
 
         readonly List<GameObject?> selectedGameObjects = new();
+        readonly ArrayBufferWriter<InputActionUI> sortedItems = new();
 
         Selectable?[]? pool;
 
-        void BuildNavigation(List<InputActionUI> sortedItems)
+        void BuildNavigation(in ReadOnlySpan<InputActionUI> sortedItems)
         {
             if (pool == null || pool.Length < Selectable.allSelectableCount)
             {
@@ -97,31 +99,30 @@ namespace TSKT
                 }
             }
 
-            using (InputActionUI.BuildSortedItemsToActivate(out var sortedItems))
+            sortedItems.Clear();
+            InputActionUI.BuildSortedItemsToActivate(sortedItems);
+            if (InputActionUI.ShouldBuildNavigation)
             {
-                if (InputActionUI.ShouldBuildNavigation)
+                InputActionUI.ShouldBuildNavigation = false;
+
+                if (controlNavigation)
                 {
-                    InputActionUI.ShouldBuildNavigation = false;
-
-                    if (controlNavigation)
-                    {
-                        BuildNavigation(sortedItems);
-                    }
-
-                    foreach (var it in sortedItems)
-                    {
-                        it.Activate();
-                    }
+                    BuildNavigation(sortedItems.WrittenSpan);
                 }
-                else
+
+                foreach (var it in sortedItems.WrittenSpan)
                 {
-                    foreach (var item in sortedItems)
+                    it.Activate();
+                }
+            }
+            else
+            {
+                foreach (var item in sortedItems.WrittenSpan)
+                {
+                    item.Invoke(out var exclusive);
+                    if (exclusive)
                     {
-                        item.Invoke(out var exclusive);
-                        if (exclusive)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
             }

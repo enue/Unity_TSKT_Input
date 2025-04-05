@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Buffers;
 
 namespace TSKT
 {
@@ -67,9 +68,8 @@ namespace TSKT
         public abstract void Activate();
         public abstract void Invoke(out bool exclusive);
 
-        public static UnityEngine.Pool.PooledObject<List<InputActionUI>> BuildSortedItemsToActivate(out List<InputActionUI> result)
+        public static void BuildSortedItemsToActivate(ArrayBufferWriter<InputActionUI> writer)
         {
-            var pooledObject = UnityEngine.Pool.ListPool<InputActionUI>.Get(out result);
             using (UnityEngine.Pool.ListPool<(RenderOrder position, InputActionUI ui)>.Get(out var uiPositions))
             {
                 RenderOrder? maxInterceptor = default;
@@ -107,14 +107,14 @@ namespace TSKT
 
                 foreach (var (position, ui) in uiPositions)
                 {
-                    result.Add(ui);
+                    writer.GetSpan(1)[0] = ui;
+                    writer.Advance(1);
                     if (ui.Modal)
                     {
                         break;
                     }
                 }
             }
-            return pooledObject;
         }
     }
 }
