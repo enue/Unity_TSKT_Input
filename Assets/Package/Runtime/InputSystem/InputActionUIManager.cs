@@ -25,19 +25,19 @@ namespace TSKT
             {
                 pool = new Selectable[Selectable.allSelectableCount];
             }
-            Selectable.AllSelectablesNoAlloc(pool);
-            foreach (var it in pool.AsSpan(0, Selectable.allSelectableCount))
+            var count = Selectable.AllSelectablesNoAlloc(pool);
+            for (int i = count; i < pool.Length; i++)
+            {
+                pool[i] = null;
+            }
+            foreach (var it in pool.AsSpan(0, count))
             {
                 var navigation = it!.navigation;
                 navigation.mode = Navigation.Mode.None;
                 it.navigation = navigation;
             }
-            for (int i = 0; i < pool.Length; i++)
-            {
-                pool[i] = null;
-            }
 
-            GameObject? topSelectabeGameObject = null;
+            GameObject? topSelectableGameObject = null;
             int? latestLog = null;
             foreach (var it in sortedItems)
             {
@@ -47,7 +47,7 @@ namespace TSKT
                     if (selectable && selectable!.enabled)
                     {
                         selectable.navigation = it.Navigation;
-                        topSelectabeGameObject = it.gameObject;
+                        topSelectableGameObject = it.gameObject;
                         if (!latestLog.HasValue || latestLog.Value > 0)
                         {
                             var index = selectedGameObjects.IndexOf(it.gameObject);
@@ -68,7 +68,7 @@ namespace TSKT
             }
             else
             {
-                EventSystem.current.SetSelectedGameObject(topSelectabeGameObject);
+                EventSystem.current.SetSelectedGameObject(topSelectableGameObject);
             }
 
             selectedGameObjects.RemoveAll(_ => !_);

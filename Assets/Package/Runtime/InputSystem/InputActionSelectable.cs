@@ -12,7 +12,7 @@ namespace TSKT
         public override bool Modal => false;
 
         [SerializeField]
-        Navigation navigation = new Navigation() { mode = Navigation.Mode.Automatic };
+        Navigation navigation = new() { mode = Navigation.Mode.Automatic };
         public override Navigation Navigation => navigation;
 
         public void SetNavigation(Navigation value)

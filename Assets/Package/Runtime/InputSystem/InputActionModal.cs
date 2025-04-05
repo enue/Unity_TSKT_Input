@@ -11,7 +11,7 @@ namespace TSKT
     public class InputActionModal : InputActionUI
     {
         public override bool Modal => true;
-        public override Navigation Navigation => new Navigation() { mode = Navigation.Mode.None };
+        public override Navigation Navigation => new() { mode = Navigation.Mode.None };
 
         public override void Invoke(out bool exclusive)
         {

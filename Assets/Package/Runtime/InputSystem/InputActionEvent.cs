@@ -21,7 +21,7 @@ namespace TSKT
         public UnityEngine.Events.UnityEvent<InputAction> OnTriggered => onTriggered;
 
         public override bool Modal => false;
-        public override Navigation Navigation => new Navigation() { mode = Navigation.Mode.None };
+        public override Navigation Navigation => new() { mode = Navigation.Mode.None };
 
         public override void Activate()
         {

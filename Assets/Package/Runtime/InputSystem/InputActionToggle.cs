@@ -21,7 +21,7 @@ namespace TSKT
         Toggle Toggle => toggle ? toggle! : (toggle = GetComponent<Toggle>());
 
         public override bool Modal => false;
-        public override Navigation Navigation => new Navigation() { mode = Navigation.Mode.None };
+        public override Navigation Navigation => new() { mode = Navigation.Mode.None };
 
         public override void Activate()
         {

@@ -9,7 +9,7 @@ namespace TSKT
 {
     public abstract class InputActionUI : MonoBehaviour
     {
-        static readonly HashSet<InputActionUI> instances = new HashSet<InputActionUI>();
+        static readonly HashSet<InputActionUI> instances = new();
         public static bool ShouldBuildNavigation { get; set; }
 
         [SerializeField]
@@ -68,7 +68,7 @@ namespace TSKT
         public abstract void Activate();
         public abstract void Invoke(out bool exclusive);
 
-        public static void BuildSortedItemsToActivate(ArrayBufferWriter<InputActionUI> writer)
+        public static void BuildSortedItemsToActivate(IBufferWriter<InputActionUI> writer)
         {
             using (UnityEngine.Pool.ListPool<(RenderOrder position, InputActionUI ui)>.Get(out var uiPositions))
             {
@@ -105,15 +105,18 @@ namespace TSKT
                 // 降順にしたいので符号を反転させる
                 uiPositions.Sort(static (x, y) => -RenderOrder.Compare(x.position, y.position));
 
+                var span = writer.GetSpan(uiPositions.Count);
+                var writtenCount = 0;
                 foreach (var (position, ui) in uiPositions)
                 {
-                    writer.GetSpan(1)[0] = ui;
-                    writer.Advance(1);
+                    span[writtenCount] = ui;
+                    ++writtenCount;
                     if (ui.Modal)
                     {
                         break;
                     }
                 }
+                writer.Advance(writtenCount);
             }
         }
     }
