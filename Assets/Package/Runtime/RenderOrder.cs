@@ -138,8 +138,8 @@ namespace TSKT
             Debug.Assert(false, "can't determine comparing " + x.name + " and " + y.name);
 
             // とりあえずInstaneIDでごまかす
-            var xInstanceID = x.GetInstanceID();
-            var yInstanceID = y.GetInstanceID();
+            var xInstanceID = x.GetEntityId();
+            var yInstanceID = y.GetEntityId();
             if (xInstanceID > yInstanceID)
             {
                 return 1;
