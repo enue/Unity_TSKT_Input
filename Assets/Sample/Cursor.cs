@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#nullable enable
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -8,7 +9,12 @@ namespace TSKT
 {
     public class Cursor : MonoBehaviour
     {
-        static public Cursor Instance { get; private set; }
+        public static Cursor Instance { get; private set; }
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void Init()
+        {
+            Instance = null;
+        }
 
         [SerializeField]
         Image image = default;
