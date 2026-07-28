@@ -29,11 +29,6 @@ namespace TSKT
         }
 
         public static ClickSuppressor? Instance { get; private set; }
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void Init()
-        {
-            Instance = null;
-        }
 
         [SerializeField]
         InputSystemUIInputModule module = default!;
