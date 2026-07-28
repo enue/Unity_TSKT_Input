@@ -6,14 +6,13 @@ using UnityEngine;
 namespace TSKT
 {
     [System.Obsolete]
-    public class InputSetting : ScriptableObject
+    public class InputSetting
     {
-        static InputSetting? instance;
         static public InputSetting Instance
         {
             get
             {
-                return instance ? instance! : (instance = Resources.Load<InputSetting>("InputSetting"));
+                return new InputSetting();
             }
         }
 
