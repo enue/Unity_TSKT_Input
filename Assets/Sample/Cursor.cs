@@ -10,23 +10,17 @@ namespace TSKT
     public class Cursor : MonoBehaviour
     {
         public static Cursor Instance { get; private set; }
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void Init()
-        {
-            Instance = null;
-        }
 
         [SerializeField]
-        Image image = default;
+        Image image = default!;
 
-        RectTransform focusObject;
-        Canvas focusObjectRootCanvas;
-        RectTransform viewport;
+        RectTransform? focusObject;
+        Canvas? focusObjectRootCanvas;
+        RectTransform? viewport;
         Vector3? focusPosition;
 
-        EasingValue x;
-        EasingValue y;
-        Vector3? initialScale;
+        EasingValue? x;
+        EasingValue? y;
 
         public bool IsMouseMode { get; set; }
         public bool IsSleeping { get; private set; }
