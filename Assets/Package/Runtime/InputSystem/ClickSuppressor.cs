@@ -1,56 +1,35 @@
 ﻿#nullable enable
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 
 namespace TSKT
 {
+    /// <summary>
+    /// 互換のために残している。中身はInputBlockerを呼ぶだけ。
+    /// </summary>
     [System.Obsolete("Use InputBlocker.Block() instead.")]
     public class ClickSuppressor : MonoBehaviour
     {
         public readonly struct Handler : System.IDisposable
         {
-            readonly ClickSuppressor? owner;
+            readonly System.IDisposable? inner;
             readonly public int Id { get; }
 
-            public Handler(ClickSuppressor filter)
+            internal Handler(System.IDisposable inner, int id)
             {
-                owner = filter;
-                Id = filter.nextHandlerId;
+                this.inner = inner;
+                Id = id;
             }
+
             public void Dispose()
             {
-                // default(Handler)や、破棄済みのownerに対しては何もしない
-                if (!owner)
-                {
-                    return;
-                }
-                // Handlerはstructなのでコピーから複数回Disposeされうる。解除済みなら何もしない
-                if (!owner!.handlerIds.Remove(Id))
-                {
-                    return;
-                }
-                if (owner.handlerIds.Count == 0)
-                {
-                    owner.Disable();
-                }
+                // InputBlockerのハンドルは複数回Disposeしても安全。default(Handler)では何もしない
+                inner?.Dispose();
             }
         }
 
         public static ClickSuppressor? Instance { get; private set; }
 
-        [SerializeField]
-        InputSystemUIInputModule module = default!;
-
-        int nextHandlerId;
-        readonly HashSet<int> handlerIds = new();
-
-        InputActionReference? submit;
-        InputActionReference? cancel;
-        InputActionReference? leftClick;
-        InputActionReference? rightClick;
-        InputActionReference? middleClick;
+        static int nextHandlerId;
 
         void Awake()
         {
@@ -67,40 +46,9 @@ namespace TSKT
 
         public Handler Enable()
         {
-            // 抑制を始めるたびに現在の設定を取り直す。抑制中の再取得はnullを拾うのでしない
-            if (handlerIds.Count == 0)
-            {
-                cancel = module.cancel;
-                submit = module.submit;
-                leftClick = module.leftClick;
-                rightClick = module.rightClick;
-                middleClick = module.middleClick;
-
-                module.cancel = null;
-                module.submit = null;
-                module.leftClick = null;
-                module.rightClick = null;
-                module.middleClick = null;
-            }
-
-            var token = new Handler(this);
-            handlerIds.Add(token.Id);
+            var id = nextHandlerId;
             ++nextHandlerId;
-
-            return token;
-        }
-
-        void Disable()
-        {
-            if (!module)
-            {
-                return;
-            }
-            module.cancel = cancel;
-            module.submit = submit;
-            module.leftClick = leftClick;
-            module.rightClick = rightClick;
-            module.middleClick = middleClick;
+            return new Handler(InputBlocker.Block(), id);
         }
     }
 }
