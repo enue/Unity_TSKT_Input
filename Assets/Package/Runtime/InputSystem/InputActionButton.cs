@@ -31,7 +31,7 @@ namespace TSKT
         {
             if (action.ToInputAction().triggered)
             {
-                if (Button.isActiveAndEnabled && Button.interactable)
+                if (Button.isActiveAndEnabled && Button.IsInteractable())
                 {
                     Button.onClick.Invoke();
                     exclusive = this.exclusive;

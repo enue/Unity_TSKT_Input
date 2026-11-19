@@ -98,16 +98,30 @@ namespace TSKT
             }
             if (x.renderMode == RenderMode.ScreenSpaceCamera)
             {
-                // cameraDepthが大きいほうが手前
-                if (x.worldCamera.depth > y.worldCamera.depth)
+                var xCamera = x.worldCamera;
+                var yCamera = y.worldCamera;
+                if (xCamera != yCamera)
                 {
-                    return 1;
+                    // カメラ未設定のCanvasはOverlayと同様に描画されるので手前
+                    if (!xCamera)
+                    {
+                        return 1;
+                    }
+                    if (!yCamera)
+                    {
+                        return -1;
+                    }
+                    // cameraDepthが大きいほうが手前
+                    if (xCamera.depth > yCamera.depth)
+                    {
+                        return 1;
+                    }
+                    if (xCamera.depth < yCamera.depth)
+                    {
+                        return -1;
+                    }
                 }
-                if (x.worldCamera.depth < y.worldCamera.depth)
-                {
-                    return -1;
-                }
-                if (x.worldCamera == y.worldCamera)
+                else
                 {
                     if (x.sortingLayerID != y.sortingLayerID)
                     {

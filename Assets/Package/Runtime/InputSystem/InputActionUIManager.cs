@@ -83,11 +83,15 @@ namespace TSKT
                 if (currentSelectedGameObject)
                 {
                     var i = selectedGameObjects.IndexOf(currentSelectedGameObject);
-                    if (i > 0)
+                    // 既に先頭にある場合は何もしない。毎フレーム積むとリストが際限なく伸びる。
+                    if (i != 0)
                     {
-                        selectedGameObjects.RemoveAt(i);
+                        if (i > 0)
+                        {
+                            selectedGameObjects.RemoveAt(i);
+                        }
+                        selectedGameObjects.Insert(0, currentSelectedGameObject);
                     }
-                    selectedGameObjects.Insert(0, currentSelectedGameObject);
 
                     if (currentSelectedGameObject.TryGetComponent<Selectable>(out var selectable))
                     {

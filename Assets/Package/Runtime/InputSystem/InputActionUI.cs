@@ -28,7 +28,12 @@ namespace TSKT
         }
 
         Canvas? rootCanvas;
-        Canvas RootCanvas
+        bool warnedCanvasNotFound;
+
+        /// <summary>
+        /// Canvasの外に置かれている場合はnull
+        /// </summary>
+        Canvas? RootCanvas
         {
             get
             {
@@ -41,9 +46,10 @@ namespace TSKT
                 }
                 if (!rootCanvas)
                 {
-                    rootCanvas = GetComponentInParent<Canvas>().rootCanvas;
+                    var canvas = GetComponentInParent<Canvas>();
+                    rootCanvas = canvas ? canvas.rootCanvas : null;
                 }
-                return rootCanvas!;
+                return rootCanvas ? rootCanvas : null;
             }
         }
 
@@ -85,7 +91,20 @@ namespace TSKT
                         continue;
                     }
 
-                    var position = new RenderOrder(item.RootCanvas, item.transform, item.orderInObject);
+                    var itemRootCanvas = item.RootCanvas;
+                    if (!itemRootCanvas)
+                    {
+                        // Canvasの外にあると描画順を決められないので対象外
+                        if (!item.warnedCanvasNotFound)
+                        {
+                            item.warnedCanvasNotFound = true;
+                            Debug.LogWarning(item.GetType().Name + " requires a parent Canvas : " + item.name, item);
+                        }
+                        continue;
+                    }
+                    item.warnedCanvasNotFound = false;
+
+                    var position = new RenderOrder(itemRootCanvas!, item.transform, item.orderInObject);
 
                     if (maxInterceptor.HasValue)
                     {

@@ -32,7 +32,7 @@ namespace TSKT
         {
             if (action.action.triggered)
             {
-                if (Toggle.isActiveAndEnabled && Toggle.interactable)
+                if (Toggle.isActiveAndEnabled && Toggle.IsInteractable())
                 {
                     Toggle.isOn = !Toggle.isOn;
                     exclusive = this.exclusive;
