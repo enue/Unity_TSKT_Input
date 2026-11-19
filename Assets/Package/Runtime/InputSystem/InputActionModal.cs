@@ -13,6 +13,9 @@ namespace TSKT
         public override bool Modal => true;
         public override Navigation Navigation => new() { mode = Navigation.Mode.None };
 
+        // 他のアイテムを遮るだけで、自分からは何もしない
+        public override bool WantsInvoke => false;
+
         public override void Invoke(out bool exclusive)
         {
             exclusive = true;

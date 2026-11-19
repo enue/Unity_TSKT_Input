@@ -28,6 +28,8 @@ namespace TSKT
             action.action.Enable();
         }
 
+        public override bool WantsInvoke => action.action.triggered;
+
         public override void Invoke(out bool exclusive)
         {
             if (action.action.triggered)

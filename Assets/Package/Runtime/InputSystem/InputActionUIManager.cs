@@ -104,10 +104,10 @@ namespace TSKT
             }
 
             sortedItems.Clear();
-            InputActionUI.BuildSortedItemsToActivate(sortedItems);
             if (InputActionUI.ShouldBuildNavigation)
             {
                 InputActionUI.ShouldBuildNavigation = false;
+                InputActionUI.BuildSortedItemsToActivate(sortedItems);
 
                 if (controlNavigation)
                 {
@@ -119,8 +119,10 @@ namespace TSKT
                     it.Activate();
                 }
             }
-            else
+            else if (InputActionUI.AnyWantsInvoke())
             {
+                // 描画順のソートは重いので、Invokeが必要なフレームだけ行う
+                InputActionUI.BuildSortedItemsToActivate(sortedItems);
                 foreach (var item in sortedItems.WrittenSpan)
                 {
                     item.Invoke(out var exclusive);

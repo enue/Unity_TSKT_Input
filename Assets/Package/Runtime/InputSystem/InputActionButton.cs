@@ -27,6 +27,8 @@ namespace TSKT
             action.ToInputAction().Enable();
         }
 
+        public override bool WantsInvoke => action.ToInputAction().triggered;
+
         public override void Invoke(out bool exclusive)
         {
             if (action.ToInputAction().triggered)

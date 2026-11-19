@@ -74,6 +74,33 @@ namespace TSKT
         public abstract void Activate();
         public abstract void Invoke(out bool exclusive);
 
+        /// <summary>
+        /// このフレームでInvokeを呼ぶ必要があるか。
+        /// 有効な全アイテムがfalseを返したフレームは、描画順のソートとInvokeを省略する。
+        /// 毎フレームInvokeが必要な派生クラスはtrueのままにしておく。
+        /// </summary>
+        public virtual bool WantsInvoke => true;
+
+        public static bool AnyWantsInvoke()
+        {
+            foreach (var item in instances)
+            {
+                if (!item)
+                {
+                    continue;
+                }
+                if (!item.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+                if (item.WantsInvoke)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static void BuildSortedItemsToActivate(IBufferWriter<InputActionUI> writer)
         {
             using (UnityEngine.Pool.ListPool<(RenderOrder position, InputActionUI ui)>.Get(out var uiPositions))

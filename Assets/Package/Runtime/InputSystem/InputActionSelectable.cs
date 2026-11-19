@@ -20,6 +20,8 @@ namespace TSKT
             navigation = value;
         }
 
+        public override bool WantsInvoke => false;
+
         public override void Invoke(out bool exclusive)
         {
             exclusive = false;
