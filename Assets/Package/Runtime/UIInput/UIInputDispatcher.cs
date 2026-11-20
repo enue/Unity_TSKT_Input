@@ -16,6 +16,8 @@ namespace TSKT
     /// 通知先は押下の瞬間に決まる。UIInputModalScopeで操作可能かつCanHandleがtrueのもののうち、
     /// 一番後に登録されたものが選ばれ、離されるまでそのアクションを捕捉する。
     /// 捕捉中にそのレシーバーが操作できなくなった場合は中断し、離されるまでそのアクションは誰にも通知しない。
+    /// 同じフレームに複数のアクションが発火した場合、OnPerformedを通知するのはひとつだけ
+    /// (後から登録されたレシーバーが優先)。押下と解放はそれぞれに通知する。
     /// InputBlockerがブロック中は通知しない。
     /// </summary>
     // 同じシーンの他のコンポーネントより先に有効になるようにする
@@ -27,6 +29,11 @@ namespace TSKT
         {
             public readonly InputAction action;
             public readonly List<IUIInputReceiver> receivers = new();
+
+            /// <summary>
+            /// receiversと同じ並びの登録順。全アクションを通した連番で、大きいほど後に登録された。
+            /// </summary>
+            public readonly List<long> orders = new();
 
             /// <summary>
             /// 押下の瞬間に選ばれ、離されるまで通知を受け取るレシーバー
@@ -43,11 +50,19 @@ namespace TSKT
             {
                 this.action = action;
             }
+
+            public long OrderOf(IUIInputReceiver receiver)
+            {
+                var index = receivers.IndexOf(receiver);
+                return index >= 0 ? orders[index] : -1;
+            }
         }
 
         static readonly List<UIInputDispatcher> instances = new();
         static readonly Dictionary<InputAction, Entry> entries = new();
         static readonly List<Entry> buffer = new();
+        static readonly List<(Entry entry, IUIInputReceiver receiver, long order)> performed = new();
+        static long registrationCount;
         static bool warned;
 
         /// <summary>
@@ -106,6 +121,7 @@ namespace TSKT
             if (!entry.receivers.Contains(receiver))
             {
                 entry.receivers.Add(receiver);
+                entry.orders.Add(++registrationCount);
             }
             if (!action.enabled)
             {
@@ -123,7 +139,12 @@ namespace TSKT
             {
                 return;
             }
-            entry.receivers.Remove(receiver);
+            var index = entry.receivers.IndexOf(receiver);
+            if (index >= 0)
+            {
+                entry.receivers.RemoveAt(index);
+                entry.orders.RemoveAt(index);
+            }
             if (entry.captured == receiver)
             {
                 Cancel(entry);
@@ -143,15 +164,35 @@ namespace TSKT
             buffer.Clear();
             buffer.AddRange(entries.Values);
             var blocked = InputBlocker.IsBlocked;
+
+            // 1. 捕捉の見直しと押下の通知。発火の通知先はここで集めるだけ
+            performed.Clear();
             foreach (var entry in buffer)
             {
-                Process(entry, blocked);
+                Prepare(entry, blocked);
+            }
+
+            if (!blocked)
+            {
+                // 2. 発火の通知。同じフレームに複数あっても、通知するのはひとつだけ
+                NotifyPerformed();
+
+                // 3. 解放の通知
+                foreach (var entry in buffer)
+                {
+                    Finish(entry);
+                }
+            }
+            performed.Clear();
+
+            foreach (var entry in buffer)
+            {
                 RemoveIfUnused(entry);
             }
             buffer.Clear();
         }
 
-        static void Process(Entry entry, bool blocked)
+        static void Prepare(Entry entry, bool blocked)
         {
             var action = entry.action;
 
@@ -197,16 +238,57 @@ namespace TSKT
             if (action.WasPerformedThisFrame())
             {
                 // OnPressedの中で捕捉が外れている場合があるので、ここで見直す
-                if (entry.captured != null)
-                {
-                    entry.captured.OnPerformed(action);
-                }
-                else if (!entry.suppressed)
+                var receiver = entry.captured;
+                if (receiver == null && !entry.suppressed)
                 {
                     // 押下を経ずに発火するアクション
-                    SelectReceiver(entry.receivers)?.OnPerformed(action);
+                    receiver = SelectReceiver(entry.receivers);
+                }
+                if (receiver != null)
+                {
+                    performed.Add((entry, receiver, entry.OrderOf(receiver)));
                 }
             }
+        }
+
+        /// <summary>
+        /// 発火したアクションが同じフレームに複数あっても、通知するのはひとつだけ。
+        /// 後から登録されたレシーバーが優先される。
+        /// 先に実行された処理が画面を変えたあとで、別の処理が続けて実行されるのを防ぐ。
+        /// </summary>
+        static void NotifyPerformed()
+        {
+            if (performed.Count == 0)
+            {
+                return;
+            }
+            // 後から登録されたものが先頭に来るように並べる
+            performed.Sort(static (x, y) => y.order.CompareTo(x.order));
+
+            foreach (var (entry, receiver, _) in performed)
+            {
+                // 押下の通知の中でブロックが始まった場合
+                if (InputBlocker.IsBlocked)
+                {
+                    return;
+                }
+                // 押下の通知の中で、捕捉が外れたり操作できなくなったりしている場合がある
+                if (entry.captured != null ? entry.captured != receiver : entry.suppressed)
+                {
+                    continue;
+                }
+                if (!IsAvailable(receiver))
+                {
+                    continue;
+                }
+                receiver.OnPerformed(entry.action);
+                return;
+            }
+        }
+
+        static void Finish(Entry entry)
+        {
+            var action = entry.action;
 
             if (action.WasReleasedThisFrame())
             {
@@ -277,22 +359,22 @@ namespace TSKT
             for (int i = list.Count - 1; i >= 0; --i)
             {
                 var it = list[i];
-                // 破棄済みのコンポーネントが残っていた場合に備える
-                if (it is Object obj && !obj)
+                if (IsAvailable(it))
                 {
-                    continue;
+                    return it;
                 }
-                if (!it.CanHandle)
-                {
-                    continue;
-                }
-                if (!UIInputModalScope.IsOperable(it.Transform))
-                {
-                    continue;
-                }
-                return it;
             }
             return null;
+        }
+
+        static bool IsAvailable(IUIInputReceiver receiver)
+        {
+            // 破棄済みのコンポーネントが残っていた場合に備える
+            if (receiver is Object obj && !obj)
+            {
+                return false;
+            }
+            return receiver.CanHandle && UIInputModalScope.IsOperable(receiver.Transform);
         }
 
         // ReloadDomainなしで再生した場合に前回の状態を持ち越さない
@@ -302,6 +384,8 @@ namespace TSKT
             instances.Clear();
             entries.Clear();
             buffer.Clear();
+            performed.Clear();
+            registrationCount = 0;
             warned = false;
         }
     }
