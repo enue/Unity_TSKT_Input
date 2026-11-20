@@ -254,11 +254,19 @@ namespace TSKT.Tests
         /// </summary>
         protected UIInputSubmit AddSubmit(GameObject go, InputAction action)
         {
+            var submit = go.AddComponent<UIInputSubmit>();
+            SetPrivateField(submit, "action", CreateReference(action));
+            return submit;
+        }
+
+        /// <summary>
+        /// TearDownで破棄されるInputActionReferenceを作る。
+        /// </summary>
+        protected InputActionReference CreateReference(InputAction action)
+        {
             var reference = InputActionReference.Create(action);
             extraObjects.Add(reference);
-            var submit = go.AddComponent<UIInputSubmit>();
-            SetPrivateField(submit, "action", reference);
-            return submit;
+            return reference;
         }
 
         protected static void SetPrivateField(object target, string name, object? value)

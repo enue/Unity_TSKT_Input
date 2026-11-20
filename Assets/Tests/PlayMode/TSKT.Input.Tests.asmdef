@@ -2,10 +2,10 @@
     "name": "TSKT.Input.Tests",
     "rootNamespace": "",
     "references": [
-        "UnityEngine.TestRunner",
-        "TSKT.Input",
-        "Unity.InputSystem",
-        "UnityEngine.UI"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:fa30a64eb899ad041974d91051355733",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
