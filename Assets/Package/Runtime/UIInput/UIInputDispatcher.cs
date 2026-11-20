@@ -152,6 +152,15 @@ namespace TSKT
             RemoveIfUnused(entry);
         }
 
+        void LateUpdate()
+        {
+            if (instances[0] != this)
+            {
+                return;
+            }
+            UIInputModalScope.GuardSelection();
+        }
+
         void Update()
         {
             // 複数置かれていても、処理するのはひとつだけ
